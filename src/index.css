@@ -1,13 +1,105 @@
 @import "tailwindcss";
 
-body {
-  background: #02040a;
-  color: white;
+:root {
+  --font-primary:
+    "Space Grotesk",
+    system-ui,
+    sans-serif;
+}
+
+* {
+  font-family:
+    var(--font-primary);
+
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* =======================
+   DARK MODE
+======================= */
+:root.dark {
+  --bg: #02040a;
+
+  /* text */
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #52525b;
+
+  /* navbar */
+  --nav-text: #d4d4d8;
+  --nav-hover: #ffffff;
+
+  /* glass */
+  --glass: rgba(255,255,255,0.05);
+
+  --glass-border:
+    rgba(255,255,255,0.10);
+
+  /* buttons */
+  --button-bg:
+    rgba(255,255,255,0.04);
+
+  --button-border:
+    rgba(255,255,255,0.10);
+
+  /* shadow */
+  --glass-shadow:
+    0 10px 40px
+    rgba(0,0,0,0.22);
+}
+
+/* =======================
+   LIGHT MODE
+======================= */
+:root.light {
+  --bg: #f8fafc;
+
+  /* text */
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+
+  /* navbar text */
+  --nav-text: #4b5563;
+  --nav-hover: #111827;
+
+  /* glass */
+  --glass:
+    rgba(255,255,255,0.62);
+
+  --glass-border:
+    rgba(15,23,42,0.08);
+
+  /* buttons */
+  --button-bg:
+    rgba(255,255,255,0.45);
+
+  --button-border:
+    rgba(15,23,42,0.08);
+
+  /* shadow */
+  --glass-shadow:
+    0 8px 30px
+    rgba(15,23,42,0.08);
+}
+
+/* =======================
+   BASE
+======================= */
+html,
+body,
+#root {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text-primary);
   overflow-x: hidden;
 }
 
+/* smooth page bg */
 body {
-  background: #02040a;
-  color: white;
-  overflow-x: hidden;
+  background-color: var(--bg);
 }
