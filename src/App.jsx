@@ -34,12 +34,13 @@ function App() {
   const [formData, setFormData] = useState({
   name: "",
   email: "",
-  topic: "",
+  topic: "Project inquiry",
   message: "",
 });
 
 const [sending, setSending] = useState(false);
 const [success, setSuccess] = useState(false);
+const [hoveredField, setHoveredField] = useState(null);
 
   useEffect(() => {
     document.documentElement.classList.remove(
@@ -79,6 +80,7 @@ const [success, setSuccess] = useState(false);
       {
         from_name: formData.name,
         from_email: formData.email,
+        topic: formData.topic,
         message: formData.message,
       },
       "hPrLGtaHuvetDJrKy"
@@ -89,7 +91,7 @@ const [success, setSuccess] = useState(false);
     setFormData({
       name: "",
       email: "",
-      topic: "",
+      topic: "Project inquiry",
       message: "",
     });
 
@@ -386,8 +388,8 @@ const [success, setSuccess] = useState(false);
       </div>
     </section>
    {/* CONTACT SECTION */}
-<section id="contact" className="px-10 py-20">
-  <div className="grid lg:grid-cols-2 gap-16 items-start max-w-[1200px] mx-auto">
+<section id="contact" className="px-10 py-25">
+  <div className="grid lg:grid-cols-2 gap-16 items-start max-w-[1450px] mx-auto">
 
     {/* LEFT SIDE */}
     <div>
@@ -526,179 +528,264 @@ const [success, setSuccess] = useState(false);
       </div>
     </div>
 
-    {/* RIGHT SIDE — FORM */}
-    <form
-      onSubmit={handleSubmit}
-      className="border rounded-[24px] p-7 backdrop-blur-xl"
+    {/* RIGHT SIDE — FORM / SUCCESS */}
+    <div
+      className="border rounded-[24px] backdrop-blur-xl overflow-hidden"
       style={{
         background:
           theme === "dark" ? "rgba(255,255,255,0.03)" : "#ffffff",
         borderColor:
           theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
+        minHeight: "480px",
       }}
     >
-      {/* NAME + EMAIL ROW */}
-      <div className="grid md:grid-cols-2 gap-5 mb-5">
-        {/* NAME */}
-        <div>
-          <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
-            Your Name
-          </label>
-          <input
-            type="text"
-            value={formData.name}
-            maxLength={50}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Andrej karpathy"
-            required
-            className="
-              w-full px-4 py-3 rounded-xl border text-sm outline-none
-              transition-all duration-300 placeholder-zinc-600
-              focus:border-zinc-500
-            "
-            style={{
-              background: theme === "dark" ? "rgba(255,255,255,0.04)" : "#f8fafc",
-              borderColor: theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
-              color: "var(--text-primary)",
-            }}
-          />
-          <div className="flex justify-between mt-1.5">
-            <span className="text-[11px] text-zinc-500 font-mono">Min 2, max 50 characters</span>
-            <span className="text-[11px] text-zinc-500 font-mono">{formData.name.length}/50</span>
+      {success ? (
+        /* ── SUCCESS STATE ── */
+        <div className="flex flex-col items-center justify-center h-full px-10 py-20 text-center" style={{ minHeight: "480px" }}>
+          {/* Animated checkmark ring */}
+          <div className="relative mb-8">
+            <div
+              className="h-20 w-20 rounded-full flex items-center justify-center"
+              style={{
+                background: "linear-gradient(135deg, rgba(165,216,255,0.15), rgba(224,170,255,0.15))",
+                border: "1px solid rgba(165,216,255,0.25)",
+              }}
+            >
+              {/* Outer pulse ring */}
+              <span
+                className="absolute inset-0 rounded-full animate-ping opacity-20"
+                style={{ background: "linear-gradient(135deg, #a5d8ff, #e0aaff)" }}
+              />
+              <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                <path
+                  d="M8 18.5L14.5 25L28 11"
+                  stroke="url(#grad)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <defs>
+                  <linearGradient id="grad" x1="8" y1="18" x2="28" y2="18" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#a5d8ff" />
+                    <stop offset="1" stopColor="#e0aaff" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
           </div>
-        </div>
 
-        {/* EMAIL */}
-        <div>
-          <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
-            Email
-          </label>
-          <input
-            type="email"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            placeholder="ada@analytical.org"
-            required
-            className="
-              w-full px-4 py-3 rounded-xl border text-sm outline-none
-              transition-all duration-300 placeholder-zinc-600
-              focus:border-zinc-500
-            "
-            style={{
-              background: theme === "dark" ? "rgba(255,255,255,0.04)" : "#f8fafc",
-              borderColor: theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
-              color: "var(--text-primary)",
-            }}
-          />
-        </div>
-      </div>
+          {/* Heading */}
+          <h3
+            className="text-[28px] font-bold tracking-[-0.04em] mb-3"
+          >
+            Message received.
+          </h3>
 
-      {/* TOPIC PILLS */}
-      <div className="mb-5">
-        <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-3 font-mono">
-          What's this about?
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {["Project inquiry", "Consulting", "Speaking", "Just saying hi"].map(
-            (t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() =>
-                  setFormData({ ...formData, topic: t === formData.topic ? "" : t })
-                }
-                className="
-                  px-4 py-2 rounded-full border text-sm
-                  transition-all duration-200 font-mono
-                "
+          {/* Subtext */}
+          <p className="text-[15px] leading-[1.8] text-zinc-400 max-w-[320px] mb-2">
+            Thanks{formData.name ? `, ${formData.name.split(" ")[0]}` : ""}. I'll read every word and get back to you within 48 hours.
+          </p>
+
+          {/* Divider with label */}
+          <div className="flex items-center gap-3 my-7 w-full max-w-[280px]">
+            <div className="flex-1 h-px" style={{ background: theme === "dark" ? "rgba(255,255,255,0.08)" : "#e2e8f0" }} />
+            <span className="text-[11px] font-mono text-zinc-500 uppercase tracking-[0.15em]">while you wait</span>
+            <div className="flex-1 h-px" style={{ background: theme === "dark" ? "rgba(255,255,255,0.08)" : "#e2e8f0" }} />
+          </div>
+
+          {/* Suggestions row */}
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            {[
+              { label: "View Projects", href: "#projects" },
+              { label: "Read Writing", href: "#writing" },
+              { label: "Check GitHub", href: "https://github.com/DINESHBOLLEDULA", ext: true },
+            ].map(({ label, href, ext }) => (
+              <a
+                key={label}
+                href={href}
+                target={ext ? "_blank" : undefined}
+                rel={ext ? "noreferrer" : undefined}
+                className="px-4 py-2 rounded-full border text-[13px] font-mono transition-all duration-200 hover:-translate-y-[1px]"
                 style={{
-                  background:
-                    formData.topic === t
-                      ? theme === "dark"
-                        ? "#ffffff"
-                        : "#0f172a"
-                      : "transparent",
-                  color:
-                    formData.topic === t
-                      ? theme === "dark"
-                        ? "#000000"
-                        : "#ffffff"
-                      : "var(--text-primary)",
-                  borderColor:
-                    formData.topic === t
-                      ? theme === "dark"
-                        ? "#ffffff"
-                        : "#0f172a"
-                      : theme === "dark"
-                      ? "rgba(255,255,255,0.18)"
-                      : "#d1d5db",
+                  borderColor: theme === "dark" ? "rgba(255,255,255,0.14)" : "#e2e8f0",
+                  color: "var(--text-primary)",
                 }}
               >
-                {t}
-              </button>
-            )
-          )}
-        </div>
-      </div>
+                {label}
+              </a>
+            ))}
+          </div>
 
-      {/* MESSAGE */}
-      <div className="mb-5">
-        <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
-          Message
-        </label>
-        <textarea
-          rows={7}
-          value={formData.message}
-          maxLength={5000}
-          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          placeholder="Tell me about what you're building, who's involved, and what success looks like."
-          required
-          className="
-            w-full rounded-xl border px-4 py-4 text-sm resize-none outline-none
-            transition-all duration-300 placeholder-zinc-600
-            focus:border-zinc-500
-          "
-          style={{
-            background: theme === "dark" ? "rgba(255,255,255,0.04)" : "#f8fafc",
-            borderColor: theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
-            color: "var(--text-primary)",
-          }}
-        />
-        <div className="flex justify-between mt-1.5">
-          <span className="text-[11px] text-zinc-500 font-mono">Min 10, max 5000 characters</span>
-          <span className="text-[11px] text-zinc-500 font-mono">{formData.message.length}/5000</span>
-        </div>
-      </div>
-
-      {/* FORM FOOTER */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-zinc-500">
-          <Lock size={12} />
-          <span className="text-[12px] font-mono">Encrypted in transit · Never shared</span>
-        </div>
-
-        <div className="flex flex-col items-end gap-2">
-          {success && (
-            <p className="text-emerald-400 text-sm">✓ Message sent!</p>
-          )}
+          {/* Send another */}
           <button
-            type="submit"
-            disabled={sending}
-            className="
-              h-12 px-6 rounded-full text-black font-semibold text-sm
-              flex items-center gap-2
-              hover:scale-[1.03] transition-all duration-300 disabled:opacity-50
-            "
-            style={{
-              background: "linear-gradient(90deg, #a5d8ff, #e0aaff)",
+            onClick={() => {
+              setSuccess(false);
+              setFormData({ name: "", email: "", topic: "Project inquiry", message: "" });
             }}
+            className="text-[12px] font-mono text-zinc-500 hover:text-zinc-300 transition-colors underline underline-offset-4"
           >
-            {sending ? "Sending..." : "Send message"}
-            {!sending && <ArrowRight size={15} />}
+            Send another message
           </button>
         </div>
-      </div>
-    </form>
+      ) : (
+        /* ── FORM STATE ── */
+        <form onSubmit={handleSubmit} className="p-7">
+          {/* NAME + EMAIL ROW */}
+          <div className="grid md:grid-cols-2 gap-5 mb-8">
+            <div>
+              <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
+                Your Name
+              </label>
+              <input
+                type="text"
+                value={formData.name}
+                maxLength={50}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onMouseEnter={() => setHoveredField("name")}
+                onMouseLeave={() => setHoveredField(null)}
+                placeholder="Andrej Karpathy"
+                required
+                className="w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all duration-300 placeholder-zinc-600 focus:border-zinc-500"
+                style={{
+                  background: theme === "dark" ? "rgba(255,255,255,0.04)" : "#f8fafc",
+                  borderColor:
+                    hoveredField === "name"
+                      ? theme === "dark" ? "rgba(255,255,255,0.30)" : "#94a3b8"
+                      : theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
+                  color: "var(--text-primary)",
+                  boxShadow: hoveredField === "name"
+                    ? theme === "dark" ? "0 0 0 3px rgba(255,255,255,0.04)" : "0 0 0 3px rgba(0,0,0,0.04)"
+                    : "none",
+                }}
+              />
+              <div className="flex justify-between mt-1.5">
+                <span className="text-[11px] text-zinc-500 font-mono">Min 2, max 50 characters</span>
+                <span className="text-[11px] text-zinc-500 font-mono">{formData.name.length}/50</span>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
+                Email
+              </label>
+              <input
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onMouseEnter={() => setHoveredField("email")}
+                onMouseLeave={() => setHoveredField(null)}
+                placeholder="ada@analytical.org"
+                required
+                className="w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all duration-300 placeholder-zinc-600 focus:border-zinc-500"
+                style={{
+                  background: theme === "dark" ? "rgba(255,255,255,0.04)" : "#f8fafc",
+                  borderColor:
+                    hoveredField === "email"
+                      ? theme === "dark" ? "rgba(255,255,255,0.30)" : "#94a3b8"
+                      : theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
+                  color: "var(--text-primary)",
+                  boxShadow: hoveredField === "email"
+                    ? theme === "dark" ? "0 0 0 3px rgba(255,255,255,0.04)" : "0 0 0 3px rgba(0,0,0,0.04)"
+                    : "none",
+                }}
+              />
+            </div>
+          </div>
+
+          {/* TOPIC PILLS */}
+          <div className="mb-5">
+            <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-3 font-mono">
+              What's this about?
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {["Project inquiry", "Consulting", "Speaking", "Just saying hi"].map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, topic: t })}
+                  className="px-4 py-2 rounded-full border text-sm transition-all duration-200 font-mono"
+                  style={{
+                    background:
+                      formData.topic === t
+                        ? theme === "dark" ? "#ffffff" : "#0f172a"
+                        : "transparent",
+                    color:
+                      formData.topic === t
+                        ? theme === "dark" ? "#000000" : "#ffffff"
+                        : "var(--text-primary)",
+                    borderColor:
+                      formData.topic === t
+                        ? theme === "dark" ? "#ffffff" : "#0f172a"
+                        : theme === "dark" ? "rgba(255,255,255,0.18)" : "#d1d5db",
+                  }}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* MESSAGE */}
+          <div className="mb-5">
+            <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
+              Message
+            </label>
+            <textarea
+              rows={7}
+              value={formData.message}
+              maxLength={5000}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              onMouseEnter={() => setHoveredField("message")}
+              onMouseLeave={() => setHoveredField(null)}
+              placeholder="Tell me about what you're building, who's involved, and what success looks like."
+              required
+              className="w-full rounded-xl border px-4 py-4 text-sm resize-none outline-none transition-all duration-300 placeholder-zinc-600 focus:border-zinc-500"
+              style={{
+                background: theme === "dark" ? "rgba(255,255,255,0.04)" : "#f8fafc",
+                borderColor:
+                  hoveredField === "message"
+                    ? theme === "dark" ? "rgba(255,255,255,0.30)" : "#94a3b8"
+                    : theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
+                color: "var(--text-primary)",
+                boxShadow: hoveredField === "message"
+                  ? theme === "dark" ? "0 0 0 3px rgba(255,255,255,0.04)" : "0 0 0 3px rgba(0,0,0,0.04)"
+                  : "none",
+              }}
+            />
+            <div className="flex justify-between mt-1.5">
+              <span className="text-[11px] text-zinc-500 font-mono">Min 10, max 5000 characters</span>
+              <span className="text-[11px] text-zinc-500 font-mono">{formData.message.length}/5000</span>
+            </div>
+          </div>
+
+          {/* FORM FOOTER */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-zinc-500">
+              <Lock size={12} />
+              <span className="text-[12px] font-mono">Encrypted in transit · Never shared</span>
+            </div>
+            <button
+              type="submit"
+              disabled={sending}
+              className="h-12 px-6 rounded-full text-black font-semibold text-sm flex items-center gap-2 hover:scale-[1.03] transition-all duration-300 disabled:opacity-50"
+              style={{ background: "linear-gradient(90deg, #a5d8ff, #e0aaff)" }}
+            >
+              {sending ? (
+                <>
+                  <svg className="animate-spin" width="15" height="15" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeOpacity="0.25" />
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                  </svg>
+                  Sending...
+                </>
+              ) : (
+                <>Send message <ArrowRight size={15} /></>
+              )}
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
 
   </div>
 </section>
