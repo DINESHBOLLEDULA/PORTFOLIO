@@ -169,7 +169,7 @@ const [hoveredField, setHoveredField] = useState(null);
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 px-10 pt-28">
+      <div className="relative z-10 px-13 pt-25">
        <div
   className="
     inline-flex
@@ -183,7 +183,7 @@ const [hoveredField, setHoveredField] = useState(null);
     py-2
     backdrop-blur-xl
     shadow-[var(--glass-shadow)]
-    mb-6
+    mb-2
   "
 >
   <span
@@ -340,7 +340,7 @@ const [hoveredField, setHoveredField] = useState(null);
 
 
   {/* CONTACT ME */}
-  <button
+  {/* <button
     className="
       group
       inline-flex
@@ -382,14 +382,16 @@ const [hoveredField, setHoveredField] = useState(null);
     />
 
     Contact Me
-  </button>
+  </button> */}
 </div>
 
       </div>
     </section>
+
+
    {/* CONTACT SECTION */}
 <section id="contact" className="px-10 py-25">
-  <div className="grid lg:grid-cols-2 gap-16 items-start max-w-[1450px] mx-auto">
+  <div className="grid lg:grid-cols-2 gap-16 items-start max-w-[1420px] mx-auto">
 
     {/* LEFT SIDE */}
     <div>
@@ -798,7 +800,7 @@ const [hoveredField, setHoveredField] = useState(null);
     relative
     border-t
     border-white/[0.06]
-    px-10
+    px-14
     pt-20
     pb-8
     mt-10
