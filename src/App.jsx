@@ -3,11 +3,13 @@ import "./App.css";
 
 import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
+import emailjs from "@emailjs/browser";
 import {
   ArrowRight,
   Download,
   Mail,
-  
+  User,
+  Lock,
 } from "lucide-react";
 
 import {
@@ -28,6 +30,16 @@ function App() {
         ) || "dark"
       );
     });
+
+  const [formData, setFormData] = useState({
+  name: "",
+  email: "",
+  topic: "",
+  message: "",
+});
+
+const [sending, setSending] = useState(false);
+const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.remove(
@@ -54,6 +66,46 @@ function App() {
       />
     );
   }
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  setSending(true);
+
+  try {
+    await emailjs.send(
+      "service_cupd2yo",
+      "template_ked7cnu",
+      {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+      },
+      "hPrLGtaHuvetDJrKy"
+    );
+
+    setSuccess(true);
+
+    setFormData({
+      name: "",
+      email: "",
+      topic: "",
+      message: "",
+    });
+
+    setTimeout(() => {
+      setSuccess(false);
+    }, 3000);
+
+  } catch (error) {
+  console.log("EMAILJS ERROR:", error);
+
+  alert(
+    JSON.stringify(error, null, 2)
+  );
+}
+  setSending(false);
+};
 
   return (
   <main
@@ -333,75 +385,72 @@ function App() {
 
       </div>
     </section>
-    {/* CONTACT SECTION */}
-<section className="px-10 py-24">
-  <div className="grid lg:grid-cols-2 gap-16">
+   {/* CONTACT SECTION */}
+<section id="contact" className="px-10 py-20">
+  <div className="grid lg:grid-cols-2 gap-16 items-start max-w-[1200px] mx-auto">
 
     {/* LEFT SIDE */}
     <div>
-      {/* LABEL */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-8 h-[1px] bg-zinc-600" />
-
-        <span className="uppercase tracking-[0.2em] text-xs text-zinc-400">
+        <span className="uppercase tracking-[0.2em] text-xs text-zinc-400 font-mono">
           CONTACT
         </span>
       </div>
 
-      {/* TITLE */}
       <h2
         className="
-          text-[68px]
+          text-[52px]
+          lg:text-[60px]
           leading-[0.95]
-          tracking-[-0.06em]
-          font-semibold
+          tracking-[-0.05em]
+          font-bold
         "
       >
-        Let’s build
+        Let's build
         <br />
         something useful.
       </h2>
 
-      {/* DESCRIPTION */}
       <p
         className="
-          mt-8
-          text-[22px]
-          leading-[1.8]
+          mt-6
+          text-[17px]
+          leading-[1.9]
           text-[var(--text-secondary)]
-          max-w-[560px]
+          max-w-[460px]
         "
       >
-        Open to AI Engineering roles,
-        applied AI collaborations,
-        and building scalable
-        AI-powered systems using
-        LLMs, RAG, AI agents and
-        modern workflows.
+        Open to AI Engineering roles, applied AI
+        collaborations, and building scalable AI-powered
+        platforms using LLMs, RAG, and modern AI
+        workflows. I usually respond within 48 hours.
       </p>
 
       {/* EMAIL CARD */}
       <a
-        href="mailto:your@email.com"
+        href="mailto:dineshbolledula@gmail.com"
         className="
-          mt-10
+          mt-8
           border
-          rounded-[30px]
-          p-5
+          rounded-[22px]
+          px-5
+          py-4
           flex
           items-center
           justify-between
           transition-all
           duration-300
           hover:-translate-y-1
+          hover:border-zinc-600
           group
+          w-full
         "
         style={{
           background:
             theme === "dark"
               ? "rgba(255,255,255,0.03)"
               : "#ffffff",
-
           borderColor:
             theme === "dark"
               ? "rgba(255,255,255,0.08)"
@@ -410,262 +459,247 @@ function App() {
       >
         <div className="flex items-center gap-4">
           <div
-            className="
-              h-14
-              w-14
-              rounded-2xl
-              flex
-              items-center
-              justify-center
-            "
+            className="h-11 w-11 rounded-xl flex items-center justify-center"
             style={{
               background:
                 "linear-gradient(135deg, rgba(56,189,248,0.15), rgba(217,70,239,0.15))",
             }}
           >
             <Mail
-              size={22}
-              className="text-cyan-400"
+              size={18}
+              className="transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-300"
             />
           </div>
-
           <div>
-            <p className="text-sm text-zinc-400">
-              Email
-            </p>
-
-            <p className="text-lg font-medium">
-              dineshbolledula@gmail.com
-            </p>
+            <p className="text-xs text-zinc-400">Email</p>
+            <p className="text-base font-medium">dineshbolledula@gmail.com</p>
           </div>
         </div>
-
         <ArrowRight
-          size={22}
-          className="
-            transition-transform
-            duration-300
-            group-hover:translate-x-1
-          "
+          size={18}
+          className="transition-transform duration-300 group-hover:translate-x-1"
         />
       </a>
 
-      {/* SOCIALS */}
       <div className="grid grid-cols-2 gap-4 mt-4">
-
         {/* GITHUB */}
         <a
-          href="https://github.com/"
+          href="https://github.com/DINESHBOLLEDULA"
           target="_blank"
           rel="noreferrer"
           className="
-            border
-            rounded-[28px]
-            p-6
-            transition-all
-            duration-300
-            hover:-translate-y-1
+            group relative h-[120px] rounded-[22px] border px-5 py-4
+            flex flex-col justify-between transition-all duration-300 hover:-translate-y-1
           "
           style={{
-            background:
-              theme === "dark"
-                ? "rgba(255,255,255,0.03)"
-                : "#ffffff",
-
-            borderColor:
-              theme === "dark"
-                ? "rgba(255,255,255,0.08)"
-                : "#e2e8f0",
+            background: theme === "dark" ? "rgba(255,255,255,0.02)" : "#ffffff",
+            borderColor: theme === "dark" ? "rgba(255,255,255,0.08)" : "#e2e8f0",
           }}
         >
-          <FaGithub size={24} />
-
-          <p className="mt-5 text-zinc-400">
-            GitHub
-          </p>
-
-          <p className="font-medium text-lg">
-            @dinesh
-          </p>
+          <FaGithub size={22} className="transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-300" />
+          <div>
+            <p className="text-[13px] text-zinc-500">GitHub</p>
+            <p className="text-[15px] font-medium tracking-[-0.03em]">@dineshbolledula</p>
+          </div>
         </a>
 
         {/* LINKEDIN */}
         <a
-          href="https://linkedin.com/"
+          href="https://linkedin.com/in/dineshbolledula"
           target="_blank"
           rel="noreferrer"
           className="
-            border
-            rounded-[28px]
-            p-6
-            transition-all
-            duration-300
-            hover:-translate-y-1
+            group relative h-[120px] rounded-[22px] border px-5 py-4
+            flex flex-col justify-between transition-all duration-300 hover:-translate-y-1
           "
           style={{
-            background:
-              theme === "dark"
-                ? "rgba(255,255,255,0.03)"
-                : "#ffffff",
-
-            borderColor:
-              theme === "dark"
-                ? "rgba(255,255,255,0.08)"
-                : "#e2e8f0",
+            background: theme === "dark" ? "rgba(255,255,255,0.02)" : "#ffffff",
+            borderColor: theme === "dark" ? "rgba(255,255,255,0.08)" : "#e2e8f0",
           }}
         >
-          <FaLinkedin size={24} />
-
-          <p className="mt-5 text-zinc-400">
-            LinkedIn
-          </p>
-
-          <p className="font-medium text-lg">
-            /in/dinesh
-          </p>
+          <FaLinkedin size={22} className="transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400" />
+          <div>
+            <p className="text-[13px] text-zinc-500">LinkedIn</p>
+            <p className="text-[15px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
+          </div>
         </a>
       </div>
     </div>
 
-    {/* RIGHT FORM */}
-    <div
-      className="
-        border
-        rounded-[40px]
-        p-8
-      "
+    {/* RIGHT SIDE — FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="border rounded-[24px] p-7 backdrop-blur-xl"
       style={{
         background:
-          theme === "dark"
-            ? "rgba(255,255,255,0.03)"
-            : "#ffffff",
-
+          theme === "dark" ? "rgba(255,255,255,0.03)" : "#ffffff",
         borderColor:
-          theme === "dark"
-            ? "rgba(255,255,255,0.08)"
-            : "#e2e8f0",
+          theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
       }}
     >
-      {/* INPUTS */}
-      <div className="grid md:grid-cols-2 gap-5">
-
+      {/* NAME + EMAIL ROW */}
+      <div className="grid md:grid-cols-2 gap-5 mb-5">
+        {/* NAME */}
         <div>
-          <label className="block text-xs uppercase tracking-[0.2em] text-zinc-400 mb-3">
+          <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
             Your Name
           </label>
-
           <input
             type="text"
-            placeholder="Ada Lovelace"
+            value={formData.name}
+            maxLength={50}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            placeholder="Andrej karpathy"
+            required
             className="
-              w-full
-              rounded-[24px]
-              border
-              border-white/10
-              bg-transparent
-              px-5
-              py-4
-              outline-none
+              w-full px-4 py-3 rounded-xl border text-sm outline-none
+              transition-all duration-300 placeholder-zinc-600
+              focus:border-zinc-500
             "
+            style={{
+              background: theme === "dark" ? "rgba(255,255,255,0.04)" : "#f8fafc",
+              borderColor: theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
+              color: "var(--text-primary)",
+            }}
           />
+          <div className="flex justify-between mt-1.5">
+            <span className="text-[11px] text-zinc-500 font-mono">Min 2, max 50 characters</span>
+            <span className="text-[11px] text-zinc-500 font-mono">{formData.name.length}/50</span>
+          </div>
         </div>
 
+        {/* EMAIL */}
         <div>
-          <label className="block text-xs uppercase tracking-[0.2em] text-zinc-400 mb-3">
+          <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
             Email
           </label>
-
           <input
             type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             placeholder="ada@analytical.org"
+            required
             className="
-              w-full
-              rounded-[24px]
-              border
-              border-white/10
-              bg-transparent
-              px-5
-              py-4
-              outline-none
+              w-full px-4 py-3 rounded-xl border text-sm outline-none
+              transition-all duration-300 placeholder-zinc-600
+              focus:border-zinc-500
             "
+            style={{
+              background: theme === "dark" ? "rgba(255,255,255,0.04)" : "#f8fafc",
+              borderColor: theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
+              color: "var(--text-primary)",
+            }}
           />
         </div>
       </div>
 
-      {/* TAGS */}
-      <div className="mt-8">
-        <p className="text-xs uppercase tracking-[0.2em] text-zinc-400 mb-4">
+      {/* TOPIC PILLS */}
+      <div className="mb-5">
+        <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-3 font-mono">
           What's this about?
-        </p>
-
-        <div className="flex flex-wrap gap-3">
-          <button className="px-5 py-3 rounded-full border border-cyan-400 bg-cyan-500/10">
-            Project inquiry
-          </button>
-
-          <button className="px-5 py-3 rounded-full border border-white/10">
-            Consulting
-          </button>
-
-          <button className="px-5 py-3 rounded-full border border-white/10">
-            Speaking
-          </button>
-
-          <button className="px-5 py-3 rounded-full border border-white/10">
-            Just saying hi
-          </button>
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {["Project inquiry", "Consulting", "Speaking", "Just saying hi"].map(
+            (t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() =>
+                  setFormData({ ...formData, topic: t === formData.topic ? "" : t })
+                }
+                className="
+                  px-4 py-2 rounded-full border text-sm
+                  transition-all duration-200 font-mono
+                "
+                style={{
+                  background:
+                    formData.topic === t
+                      ? theme === "dark"
+                        ? "#ffffff"
+                        : "#0f172a"
+                      : "transparent",
+                  color:
+                    formData.topic === t
+                      ? theme === "dark"
+                        ? "#000000"
+                        : "#ffffff"
+                      : "var(--text-primary)",
+                  borderColor:
+                    formData.topic === t
+                      ? theme === "dark"
+                        ? "#ffffff"
+                        : "#0f172a"
+                      : theme === "dark"
+                      ? "rgba(255,255,255,0.18)"
+                      : "#d1d5db",
+                }}
+              >
+                {t}
+              </button>
+            )
+          )}
         </div>
       </div>
 
       {/* MESSAGE */}
-      <div className="mt-8">
-        <label className="block text-xs uppercase tracking-[0.2em] text-zinc-400 mb-3">
+      <div className="mb-5">
+        <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
           Message
         </label>
-
         <textarea
-          rows="6"
-          placeholder="Tell me about what you're building..."
+          rows={7}
+          value={formData.message}
+          maxLength={5000}
+          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+          placeholder="Tell me about what you're building, who's involved, and what success looks like."
+          required
           className="
-            w-full
-            rounded-[28px]
-            border
-            border-white/10
-            bg-transparent
-            p-5
-            resize-none
-            outline-none
-          "
-        />
-      </div>
-
-      {/* BUTTON */}
-      <div className="mt-8 flex justify-between items-center flex-wrap gap-4">
-        <p className="text-sm text-zinc-500">
-          Usually responds within 48 hours
-        </p>
-
-        <button
-          className="
-            px-8
-            py-4
-            rounded-full
-            text-black
-            font-medium
-            flex
-            items-center
-            gap-3
+            w-full rounded-xl border px-4 py-4 text-sm resize-none outline-none
+            transition-all duration-300 placeholder-zinc-600
+            focus:border-zinc-500
           "
           style={{
-            background:
-              "linear-gradient(90deg,#8ed8ff,#d47cff)",
+            background: theme === "dark" ? "rgba(255,255,255,0.04)" : "#f8fafc",
+            borderColor: theme === "dark" ? "rgba(255,255,255,0.10)" : "#e2e8f0",
+            color: "var(--text-primary)",
           }}
-        >
-          Send Message
-          <ArrowRight size={18} />
-        </button>
+        />
+        <div className="flex justify-between mt-1.5">
+          <span className="text-[11px] text-zinc-500 font-mono">Min 10, max 5000 characters</span>
+          <span className="text-[11px] text-zinc-500 font-mono">{formData.message.length}/5000</span>
+        </div>
       </div>
-    </div>
+
+      {/* FORM FOOTER */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-zinc-500">
+          <Lock size={12} />
+          <span className="text-[12px] font-mono">Encrypted in transit · Never shared</span>
+        </div>
+
+        <div className="flex flex-col items-end gap-2">
+          {success && (
+            <p className="text-emerald-400 text-sm">✓ Message sent!</p>
+          )}
+          <button
+            type="submit"
+            disabled={sending}
+            className="
+              h-12 px-6 rounded-full text-black font-semibold text-sm
+              flex items-center gap-2
+              hover:scale-[1.03] transition-all duration-300 disabled:opacity-50
+            "
+            style={{
+              background: "linear-gradient(90deg, #a5d8ff, #e0aaff)",
+            }}
+          >
+            {sending ? "Sending..." : "Send message"}
+            {!sending && <ArrowRight size={15} />}
+          </button>
+        </div>
+      </div>
+    </form>
+
   </div>
 </section>
 
