@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --font-primary:
     "Space Grotesk",
@@ -106,4 +110,38 @@ body,
 /* smooth page bg */
 body {
   background-color: var(--bg);
+}
+
+.dark {
+  --footer-border: rgba(255,255,255,0.08);
+}
+
+.light {
+  --footer-border: rgba(15,23,42,0.12);
+}
+
+
+.footer-link {
+  position: relative;
+}
+
+.footer-link::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+
+  background: #38bdf8;
+
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover::before {
+  opacity: 1;
 }

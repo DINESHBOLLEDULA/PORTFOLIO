@@ -390,8 +390,31 @@ const [hoveredField, setHoveredField] = useState(null);
 
 
    {/* CONTACT SECTION */}
-<section id="contact" className="px-10 py-25">
-  <div className="grid lg:grid-cols-2 gap-16 items-start max-w-[1420px] mx-auto">
+<section
+  id="contact"
+  className="
+    px-4
+    sm:px-6
+    md:px-8
+    lg:px-10
+    pt-16
+    pb-8
+    md:pt-24
+    md:pb-10
+  "
+>
+  <div
+  className="
+    grid
+    grid-cols-1
+    lg:grid-cols-2
+    gap-10
+    lg:gap-16
+    items-start
+    max-w-[1420px]
+    mx-auto
+  "
+>
 
     {/* LEFT SIDE */}
     <div>
@@ -404,8 +427,10 @@ const [hoveredField, setHoveredField] = useState(null);
 
       <h2
         className="
-          text-[52px]
-          lg:text-[60px]
+          text-[36px]
+sm:text-[44px]
+md:text-[52px]
+lg:text-[60px]
           leading-[0.95]
           tracking-[-0.05em]
           font-bold
@@ -422,7 +447,7 @@ const [hoveredField, setHoveredField] = useState(null);
           text-[17px]
           leading-[1.9]
           text-[var(--text-secondary)]
-          max-w-[460px]
+          max-w-full lg:max-w-[460px]
         "
       >
         Open to AI Engineering roles, applied AI
@@ -461,7 +486,7 @@ const [hoveredField, setHoveredField] = useState(null);
               : "#e2e8f0",
         }}
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
           <div
             className="h-11 w-11 rounded-xl flex items-center justify-center"
             style={{
@@ -476,34 +501,69 @@ const [hoveredField, setHoveredField] = useState(null);
           </div>
           <div>
             <p className="text-xs text-zinc-400">Email</p>
-            <p className="text-base font-medium">dineshbolledula@gmail.com</p>
+            <p
+  className="
+    text-[13px]
+    sm:text-[15px]
+    font-medium
+    truncate
+  "
+>
+  dineshbolledula@gmail.com
+</p>
           </div>
         </div>
-        <ArrowRight
-          size={18}
-          className="transition-transform duration-300 group-hover:translate-x-1"
-        />
+       <ArrowRight
+  size={18}
+  className="
+    shrink-0
+    transition-transform
+    duration-300
+    group-hover:translate-x-1
+  "
+/>
       </a>
 
-      <div className="grid grid-cols-2 gap-4 mt-4">
+    <div
+  className="
+    grid
+    grid-cols-2
+    gap-4
+    mt-4
+    w-full
+  "
+>
         {/* GITHUB */}
         <a
           href="https://github.com/DINESHBOLLEDULA"
           target="_blank"
           rel="noreferrer"
           className="
-            group relative h-[120px] rounded-[22px] border px-5 py-4
-            flex flex-col justify-between transition-all duration-300 hover:-translate-y-1
-          "
+  group
+  relative
+  h-[90px]
+md:h-[85px]
+  rounded-[16px]
+  border
+ px-4
+py-3
+  flex
+  flex-col
+  justify-between
+  transition-all
+  duration-300
+  hover:-translate-y-1
+"
           style={{
             background: theme === "dark" ? "rgba(255,255,255,0.02)" : "#ffffff",
             borderColor: theme === "dark" ? "rgba(255,255,255,0.08)" : "#e2e8f0",
           }}
         >
-          <FaGithub size={22} className="transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-300" />
+          <FaGithub size={15} className="transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-300" />
           <div>
-            <p className="text-[13px] text-zinc-500">GitHub</p>
-            <p className="text-[15px] font-medium tracking-[-0.03em]">@dineshbolledula</p>
+            <p className="text-[11px] text-zinc-500">GitHub</p>
+            <p className="text-[12px]
+sm:text-[13px] font-medium tracking-[-0.03em]">@dineshbolledula</p>
           </div>
         </a>
 
@@ -513,18 +573,31 @@ const [hoveredField, setHoveredField] = useState(null);
           target="_blank"
           rel="noreferrer"
           className="
-            group relative h-[120px] rounded-[22px] border px-5 py-4
-            flex flex-col justify-between transition-all duration-300 hover:-translate-y-1
-          "
+  group
+  relative
+  h-[90px]
+md:h-[85px]
+  rounded-[16px]
+  border
+ px-4
+py-3
+  flex
+  flex-col
+  justify-between
+  transition-all
+  duration-300
+  hover:-translate-y-1
+"
           style={{
             background: theme === "dark" ? "rgba(255,255,255,0.02)" : "#ffffff",
             borderColor: theme === "dark" ? "rgba(255,255,255,0.08)" : "#e2e8f0",
           }}
         >
-          <FaLinkedin size={22} className="transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400" />
+          <FaLinkedin size={15} className="transition-all duration-300 group-hover:scale-110 group-hover:text-cyan-400" />
           <div>
-            <p className="text-[13px] text-zinc-500">LinkedIn</p>
-            <p className="text-[15px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
+            <p className="text-[11px] text-zinc-500">LinkedIn</p>
+            <p className="text-[12px]
+sm:text-[13px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
           </div>
         </a>
       </div>
@@ -532,7 +605,13 @@ const [hoveredField, setHoveredField] = useState(null);
 
     {/* RIGHT SIDE — FORM / SUCCESS */}
     <div
-      className="border rounded-[24px] backdrop-blur-xl overflow-hidden"
+      className="
+  border
+  rounded-[24px]
+  backdrop-blur-xl
+  overflow-hidden
+  w-full
+"
       style={{
         background:
           theme === "dark" ? "rgba(255,255,255,0.03)" : "#ffffff",
@@ -543,7 +622,19 @@ const [hoveredField, setHoveredField] = useState(null);
     >
       {success ? (
         /* ── SUCCESS STATE ── */
-        <div className="flex flex-col items-center justify-center h-full px-10 py-20 text-center" style={{ minHeight: "480px" }}>
+        <div className="
+  flex
+  flex-col
+  items-center
+  justify-center
+  h-full
+  px-5
+  sm:px-8
+  md:px-10
+  py-14
+  md:py-20
+  text-center
+" style={{ minHeight: "480px" }}>
           {/* Animated checkmark ring */}
           <div className="relative mb-8">
             <div
@@ -631,9 +722,24 @@ const [hoveredField, setHoveredField] = useState(null);
         </div>
       ) : (
         /* ── FORM STATE ── */
-        <form onSubmit={handleSubmit} className="p-7">
+        <form
+  onSubmit={handleSubmit}
+  className="
+    p-4
+    sm:p-6
+    md:p-7
+  "
+>
           {/* NAME + EMAIL ROW */}
-          <div className="grid md:grid-cols-2 gap-5 mb-8">
+          <div
+  className="
+    grid
+    grid-cols-1
+    md:grid-cols-2
+    gap-5
+    mb-8
+  "
+>
             <div>
               <label className="block text-[11px] uppercase tracking-[0.18em] text-zinc-400 mb-2 font-mono">
                 Your Name
@@ -761,7 +867,18 @@ const [hoveredField, setHoveredField] = useState(null);
           </div>
 
           {/* FORM FOOTER */}
-          <div className="flex items-center justify-between">
+         <div
+  className="
+    flex
+    flex-col
+    sm:flex-row
+    gap-4
+    sm:gap-0
+    items-start
+    sm:items-center
+    justify-between
+  "
+>
             <div className="flex items-center gap-2 text-zinc-500">
               <Lock size={12} />
               <span className="text-[12px] font-mono">Encrypted in transit · Never shared</span>
@@ -769,7 +886,24 @@ const [hoveredField, setHoveredField] = useState(null);
             <button
               type="submit"
               disabled={sending}
-              className="h-12 px-6 rounded-full text-black font-semibold text-sm flex items-center gap-2 hover:scale-[1.03] transition-all duration-300 disabled:opacity-50"
+             className="
+  h-12
+  w-full
+  sm:w-auto
+  px-6
+  rounded-full
+  text-black
+  font-semibold
+  text-sm
+  flex
+  justify-center
+  items-center
+  gap-2
+  hover:scale-[1.03]
+  transition-all
+  duration-300
+  disabled:opacity-50
+"
               style={{ background: "linear-gradient(90deg, #a5d8ff, #e0aaff)" }}
             >
               {sending ? (
@@ -799,21 +933,26 @@ const [hoveredField, setHoveredField] = useState(null);
   className="
     relative
     border-t
-    border-white/[0.06]
-    px-14
-    pt-20
+    border-[var(--footer-border)]
+    px-5
+    sm:px-6
+    lg:px-14
+     pt-10
+    md:pt-12
     pb-8
-    mt-10
+    mt-0
   "
 >
   <div
-    className="
-      grid
-      grid-cols-1
-      md:grid-cols-4
-      gap-12
-    "
-  >
+  className="
+  grid
+  grid-cols-1
+  sm:grid-cols-2
+  lg:grid-cols-4
+  gap-6
+  lg:gap-8
+"
+>
     {/* LEFT */}
     <div className="md:col-span-1">
       <div className="flex items-center gap-4">
@@ -877,27 +1016,166 @@ const [hoveredField, setHoveredField] = useState(null);
       </p>
 
       <div className="flex flex-col gap-3">
-        {[
-          "About",
-          "Projects",
-          "Experience",
-          "Stack",
-          "Contact",
-        ].map((item) => (
-          <a
-            key={item}
-            href="#"
-            className="
-              text-[17px]
-              text-[var(--text-primary)]
-              hover:opacity-70
-              transition
-            "
-          >
-            {item}
-          </a>
-        ))}
-      </div>
+  <a
+    href="#about"
+    className="
+    footer-link
+group
+inline-flex
+items-center
+gap-2
+w-fit
+text-[17px]
+text-[var(--text-primary)]
+transition-all
+duration-300
+hover:translate-x-1
+hover:text-cyan-500
+"
+  >
+    About
+    <span
+    className="
+      opacity-0
+      -translate-x-2
+      transition-all
+      duration-300
+      group-hover:opacity-100
+      group-hover:translate-x-0
+    "
+  >
+    →
+  </span>
+  </a>
+
+  <a
+    href="#projects"
+    className="
+    footer-link
+group
+inline-flex
+items-center
+gap-2
+w-fit
+text-[17px]
+text-[var(--text-primary)]
+transition-all
+duration-300
+hover:translate-x-1
+hover:text-cyan-500
+"
+  >
+    Projects
+    <span
+    className="
+      opacity-0
+      -translate-x-2
+      transition-all
+      duration-300
+      group-hover:opacity-100
+      group-hover:translate-x-0
+    "
+  >
+    →
+  </span>
+  </a>
+
+  <a
+    href="#experience"
+    className="
+    footer-link
+group
+inline-flex
+items-center
+gap-2
+w-fit
+text-[17px]
+text-[var(--text-primary)]
+transition-all
+duration-300
+hover:translate-x-1
+hover:text-cyan-500
+"
+  >
+    Experience
+    <span
+    className="
+      opacity-0
+      -translate-x-2
+      transition-all
+      duration-300
+      group-hover:opacity-100
+      group-hover:translate-x-0
+    "
+  >
+    →
+  </span>
+  </a>
+
+  <a
+    href="#stack"
+   className="
+   footer-link
+group
+inline-flex
+items-center
+gap-2
+w-fit
+text-[17px]
+text-[var(--text-primary)]
+transition-all
+duration-300
+hover:translate-x-1
+hover:text-cyan-500
+"
+  >
+    Stack
+    <span
+    className="
+      opacity-0
+      -translate-x-2
+      transition-all
+      duration-300
+      group-hover:opacity-100
+      group-hover:translate-x-0
+    "
+  >
+    →
+  </span>
+  </a>
+
+  <a
+    href="#contact"
+    className="
+    footer-link
+group
+inline-flex
+items-center
+gap-2
+w-fit
+text-[17px]
+text-[var(--text-primary)]
+transition-all
+duration-300
+hover:translate-x-1
+hover:text-cyan-500
+"
+  >
+    Contact
+    <span
+    className="
+      opacity-0
+      -translate-x-2
+      transition-all
+      duration-300
+      group-hover:opacity-100
+      group-hover:translate-x-0
+    "
+  >
+    →
+  </span>
+  </a>
+</div>
     </div>
 
     {/* SOCIALS */}
@@ -921,14 +1199,25 @@ const [hoveredField, setHoveredField] = useState(null);
       target="_blank"
       rel="noreferrer"
       className="
-        flex
-        items-center
-        gap-3
-        hover:opacity-70
-        transition
-      "
+group
+flex
+items-center
+gap-3
+w-fit
+transition-all
+duration-300
+hover:translate-x-1
+hover:text-cyan-500
+"
     >
-      <FaGithub size={18} />
+     <FaGithub
+  size={18}
+  className="
+    transition-all
+    duration-300
+    group-hover:scale-110
+  "
+/>
       <span>GitHub</span>
     </a>
 
@@ -937,14 +1226,25 @@ const [hoveredField, setHoveredField] = useState(null);
       target="_blank"
       rel="noreferrer"
       className="
-        flex
-        items-center
-        gap-3
-        hover:opacity-70
-        transition
-      "
+group
+flex
+items-center
+gap-3
+w-fit
+transition-all
+duration-300
+hover:translate-x-1
+hover:text-cyan-500
+"
     >
-      <FaLinkedin size={18} />
+      <FaLinkedin
+  size={18}
+  className="
+    transition-all
+    duration-300
+    group-hover:scale-110
+  "
+/>
       <span>LinkedIn</span>
     </a>
 
@@ -953,14 +1253,25 @@ const [hoveredField, setHoveredField] = useState(null);
       target="_blank"
       rel="noreferrer"
       className="
-        flex
-        items-center
-        gap-3
-        hover:opacity-70
-        transition
-      "
+group
+flex
+items-center
+gap-3
+w-fit
+transition-all
+duration-300
+hover:translate-x-1
+hover:text-cyan-500
+"
     >
-      <FaMedium size={18} />
+      <FaMedium
+  size={18}
+  className="
+    transition-all
+    duration-300
+    group-hover:scale-110
+  "
+/>
       <span>Medium</span>
     </a>
 
@@ -999,11 +1310,13 @@ const [hoveredField, setHoveredField] = useState(null);
 
       <div
         className="
-          rounded-3xl
-          border
-          p-5
-          backdrop-blur-xl
-        "
+    rounded-xl
+    border
+    px-4
+    py-3
+    backdrop-blur-xl
+    max-w-[260px]
+  "
         style={{
           background:
             theme === "dark"
@@ -1027,37 +1340,39 @@ const [hoveredField, setHoveredField] = useState(null);
             "
           />
 
-          <span className="font-medium">
-            AI systems normal
-          </span>
+          <span className="font-medium text-sm">
+  Available for work
+</span>
         </div>
 
         <p
-          className="
-            mt-4
-            text-sm
-            text-[var(--text-muted)]
-          "
-        >
-          version 1.0.0 • uptime 99.9%
-        </p>
+  className="
+    mt-2
+    text-xs
+    text-[var(--text-muted)]
+  "
+>
+  Open to AI/ML opportunities
+</p>
       </div>
     </div>
   </div>
 
   {/* BOTTOM */}
-  <div
-    className="
-      mt-16
-      border-t
-      border-white/[0.06]
-      pt-8
-      text-sm
-      text-[var(--text-muted)]
-    "
-  >
-    © 2026 dineshkumar
-  </div>
+ <div
+  className="
+    mt-6
+    border-t
+    pt-4
+    text-sm
+    text-[var(--text-muted)]
+  "
+  style={{
+    borderColor: "var(--footer-border)"
+  }}
+>
+  © 2026 dineshkumar
+</div>
 </footer>
   </main>
 );
