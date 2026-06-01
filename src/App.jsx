@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-
+import HeroCard from "./assets/hero-card.png";
 import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
 import emailjs from "@emailjs/browser";
@@ -169,48 +169,120 @@ const [hoveredField, setHoveredField] = useState(null);
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 px-13 pt-25">
+      <div
+  className="
+    relative
+    z-10
+    px-5
+    sm:px-6
+    lg:px-12
+    pt-24
+    sm:pt-28
+    lg:pt-24
+  "
+>
+  <div
+    className="
+  max-w-[1500px]
+  mx-auto
+  grid
+  grid-cols-1
+  lg:grid-cols-[1.05fr_0.95fr]
+  gap-8
+  lg:gap-4
+  items-center
+"
+  >    <div className="order-2 lg:order-1">
        <div
   className="
     inline-flex
     items-center
     gap-2
+
+    max-w-full
+    sm:max-w-fit
+
     rounded-full
     border
     border-[var(--glass-border)]
     bg-[var(--badge-bg)]
-    px-4
+
+    px-3
+    sm:px-4
+
     py-2
+
     backdrop-blur-xl
     shadow-[var(--glass-shadow)]
-    mb-2
+
+    mb-4
   "
 >
   <span
     className="
       h-2
       w-2
+      shrink-0
       rounded-full
       bg-emerald-400
       animate-pulse
     "
   />
 
-  <span
+  {/* <span
     className="
-      text-[10px]
-      tracking-[0.18em]
+      text-[9px]
+      sm:text-[10px]
+      md:text-[11px]
+
+      tracking-[0.15em]
+      sm:tracking-[0.18em]
+
       uppercase
-      text-[var(--text-primary)]
       font-medium
+
+      text-[var(--text-primary)]
+
+      break-words
+      leading-relaxed
     "
   >
     Building AI Products • Ex-ASE @ Accenture
-  </span>
+  </span> */}
+
+  <span
+  className="
+    text-[10px]
+    tracking-[0.18em]
+    uppercase
+    font-medium
+    text-[var(--text-primary)]
+    sm:hidden
+  "
+>
+  AI Engineer • Ex-ASE @ Accenture
+</span>
+
+<span
+  className="
+    hidden
+    sm:block
+    text-[10px]
+    tracking-[0.18em]
+    uppercase
+    font-medium
+    text-[var(--text-primary)]
+  "
+>
+  Building AI Products • Ex-ASE @ Accenture
+</span>
 </div>
         <h1
           className="
-            text-[90px]
+            text-[46px]
+sm:text-[60px]
+md:text-[72px]
+lg:text-[90px]
             leading-[0.95]
             tracking-[-0.06em]
             font-light
@@ -236,7 +308,9 @@ const [hoveredField, setHoveredField] = useState(null);
   className="
     mt-7
     max-w-[680px]
-    text-[22px]
+    text-[16px]
+sm:text-[18px]
+lg:text-[22px]
     leading-[1.7]
     tracking-[-0.02em]
     text-[var(--text-secondary)]
@@ -251,9 +325,11 @@ const [hoveredField, setHoveredField] = useState(null);
   className="
     mt-8
     flex
-    flex-wrap
-    items-center
-    gap-3
+flex-col
+sm:flex-row
+items-stretch
+sm:items-center
+gap-3
   "
 >
 <button
@@ -271,6 +347,7 @@ const [hoveredField, setHoveredField] = useState(null);
     duration-300
     hover:-translate-y-[2px]
     hover:shadow-lg
+    w-full sm:w-auto justify-center
   "
   style={{
     background:
@@ -315,6 +392,7 @@ const [hoveredField, setHoveredField] = useState(null);
     transition-all
     duration-300
     hover:-translate-y-[1px]
+    w-full sm:w-auto justify-center
   "
   style={{
     background:
@@ -384,7 +462,88 @@ const [hoveredField, setHoveredField] = useState(null);
     Contact Me
   </button> */}
 </div>
+</div>
+{/* RIGHT SIDE IMAGE */}
 
+<div
+  className="
+    order-1
+    lg:order-2
+
+    block
+
+    mb-6
+    lg:mb-0
+
+    relative
+
+    w-full
+    max-w-[300px]
+    sm:max-w-[420px]
+    md:max-w-[520px]
+    lg:max-w-none
+
+    mx-auto
+    lg:ml-auto
+  "
+>
+  {/* <div
+    className="
+      absolute
+      w-[420px]
+      h-[420px]
+      rounded-full
+      blur-[120px]
+      opacity-50
+    "
+    style={{
+      background:
+        "radial-gradient(circle, rgba(59,130,246,.45), rgba(168,85,247,.25), transparent)"
+    }}
+  /> */}
+<div
+  className="
+    absolute
+    inset-0
+    -z-10
+    blur-[140px]
+    opacity-70
+  "
+  style={{
+    background:
+      "radial-gradient(circle at center, rgba(59,130,246,.35), rgba(168,85,247,.25), transparent 70%)"
+  }}
+/>
+ <div className="hero-card-wrapper">
+  <img
+    src={HeroCard}
+    alt="AI Pipeline"
+    className="
+  hero-card
+  relative
+  z-10
+
+  w-full
+
+  max-w-[300px]
+  sm:max-w-[420px]
+  md:max-w-[520px]
+  lg:max-w-[620px]
+  xl:max-w-[760px]
+  2xl:max-w-[900px]
+
+  mx-auto
+
+  object-contain
+  select-none
+  pointer-events-auto
+"
+  />
+</div>
+
+
+</div>
+      </div>
       </div>
     </section>
 

@@ -227,3 +227,96 @@
   pointer-events: none;
 }
 
+
+.hero-card {
+  position: relative;
+
+  transform-style: preserve-3d;
+  will-change: transform;
+
+  transition:
+    transform 0.7s cubic-bezier(.22,1,.36,1),
+    filter 0.7s cubic-bezier(.22,1,.36,1);
+
+  /* stronger idle glow */
+  filter:
+    drop-shadow(
+      0 25px 55px
+      rgba(59,130,246,0.18)
+    )
+    drop-shadow(
+      0 0 45px
+      rgba(168,85,247,0.14)
+    );
+}
+
+.hero-card::after {
+  content: "";
+  position: absolute;
+  inset: -60px;
+  z-index: -1;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(59,130,246,.28),
+      rgba(168,85,247,.22),
+      transparent 72%
+    );
+
+  filter: blur(90px);
+
+  opacity: 0.85;
+
+  transition:
+    opacity .6s ease,
+    transform .6s ease;
+}
+
+/* premium hover */
+.hero-card:hover {
+  transform:
+    perspective(2200px)
+    rotateY(-14deg)
+    rotateX(8deg)
+    translateY(-14px)
+    scale(1.03);
+
+  filter:
+    drop-shadow(
+      0 50px 110px
+      rgba(59,130,246,0.35)
+    )
+    drop-shadow(
+      0 0 90px
+      rgba(168,85,247,0.32)
+    );
+}
+
+.hero-card:hover::after {
+  opacity: 1;
+  transform: scale(1.25);
+}
+
+@media (max-width: 1024px) {
+  .hero-card:hover {
+    transform: none;
+  }
+
+  .hero-card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-card::after {
+    inset: -30px;
+    filter: blur(60px);
+  }
+}
+
+@media (max-width: 400px) {
+  .hero-card {
+    max-width: 230px !important;
+  }
+}
