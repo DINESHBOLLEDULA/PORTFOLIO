@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import { FaMedium } from "react-icons/fa";
 
 // ── Config ───────────────────────────────────────────────────────────────────
@@ -8,23 +8,22 @@ const ARTICLE_COUNT = 6;
 const ARTICLE_THUMBNAILS = {
   memoization: "/articles/memoization.png",
   mlsystems: "/articles/ml-systems.png",
-
   default: "/articles/default-blog.png",
 };
 const RSS2JSON_KEY = "lpmwaazetycqxcmkwldfa4wjeuc8mvzx6qoqaymk";
 const RSS2JSON_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(`https://medium.com/feed/@${MEDIUM_USERNAME}`)}&api_key=${RSS2JSON_KEY}&count=${ARTICLE_COUNT}`;
 
-// ── Fallback articles (shown if RSS fetch fails) ──────────────────────────────
-// Update these with your real article links from medium.com/@dineshbolledula
 const FALLBACK_ARTICLES = [
   {
     guid: "1",
     title: "Memoization in Neural Networks",
     link: "https://medium.com/@dineshbolledula",
     pubDate: "2025-05-20",
-    description: "Memoization isn't just an optimization trick in neural networks, it's what makes training deep networks computationally feasible.",
-    content: "Memoization isn't just an optimization trick in neural networks, it's what makes training deep networks computationally feasible. A deep dive into how caching intermediate computations unlocks efficiency in backpropagation and beyond.",
-    categories: ["Deep Learning"],
+    description:
+      "Memoization isn't just an optimization trick in neural networks, it's what makes training deep networks computationally feasible.",
+    content:
+      "Memoization isn't just an optimization trick in neural networks, it's what makes training deep networks computationally feasible. A deep dive into how caching intermediate computations unlocks efficiency in backpropagation and beyond.",
+    categories: ["Deep Learning", "ai", "backpropagation", "memoization"],
     thumbnail: null,
   },
   {
@@ -32,62 +31,38 @@ const FALLBACK_ARTICLES = [
     title: "Types of Machine Learning Systems",
     link: "https://medium.com/@dineshbolledula",
     pubDate: "2025-05-14",
-    description: "Before diving into the categories of machine learning, we must first understand the problem we are trying to solve.",
-    content: "Before diving into the categories of machine learning, we must first understand the problem we are trying to solve. A comprehensive breakdown of supervised, unsupervised, and reinforcement learning paradigms.",
-    categories: ["Machine Learning"],
+    description:
+      "Before diving into the categories of machine learning, we must first understand the problem we are trying to solve.",
+    content:
+      "Before diving into the categories of machine learning, we must first understand the problem we are trying to solve. A comprehensive breakdown of supervised, unsupervised, and reinforcement learning paradigms.",
+    categories: ["Machine Learning", "AI", "Data Science"],
     thumbnail: null,
   },
 ];
 
-// ── RSS fetch via rss2json ────────────────────────────────────────────────────
 async function fetchFeed() {
   try {
     const res = await fetch(RSS2JSON_URL);
     if (!res.ok) return null;
     const data = await res.json();
-//     if (data.status === "ok" && data.items?.length) {
-//       return data.items.map((item) => {
-//   const enclosure =
-//     item.enclosure?.link ||
-//     item.thumbnail ||
-//     null;
-
-//   return {
-//     guid: item.guid,
-//     title: item.title,
-//     link: item.link,
-//     pubDate: item.pubDate,
-//     description: item.description,
-//     content: item.content,
-//     categories: item.categories || [],
-//     thumbnail: enclosure,
-//   };
-// });
-//     }
-
-
-if (data.status === "ok" && data.items?.length) {
-  return data.items.map((item) => {
-
-    return {
-      guid: item.guid,
-      title: item.title,
-      link: item.link,
-      pubDate: item.pubDate,
-      description: item.description,
-      content: item.content,
-      categories: item.categories || [],
-      thumbnail: item.thumbnail || null,
-    };
-  });
-}
+    if (data.status === "ok" && data.items?.length) {
+      return data.items.map((item) => ({
+        guid: item.guid,
+        title: item.title,
+        link: item.link,
+        pubDate: item.pubDate,
+        description: item.description,
+        content: item.content,
+        categories: item.categories || [],
+        thumbnail: item.thumbnail || null,
+      }));
+    }
     return null;
   } catch {
     return null;
   }
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
 function estimateReadTime(content = "") {
   const words = content.replace(/<[^>]+>/g, "").split(/\s+/).length;
   return Math.max(1, Math.round(words / 200));
@@ -96,6 +71,7 @@ function estimateReadTime(content = "") {
 function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString("en-US", {
     month: "short",
+    day: "numeric",
     year: "numeric",
   });
 }
@@ -106,367 +82,322 @@ function stripHtml(html = "") {
 
 function extractThumbnail(item) {
   const title = item.title.toLowerCase();
-
-  if (title.includes("memoization"))
-    return ARTICLE_THUMBNAILS.memoization;
-
-  if (title.includes("machine learning systems"))
-    return ARTICLE_THUMBNAILS.mlsystems;
-
+  if (title.includes("memoization")) return ARTICLE_THUMBNAILS.memoization;
+  if (title.includes("machine learning systems")) return ARTICLE_THUMBNAILS.mlsystems;
   return ARTICLE_THUMBNAILS.default;
 }
 
+// ── Theme tokens ──────────────────────────────────────────────────────────────
+function tokens(theme) {
+  const dark = theme === "dark";
+  return {
+    // card background
+    cardBg: dark
+      ? "linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)"
+      : "#ffffff",
 
+    // card border
+    cardBorder: dark ? "rgba(255,255,255,0.10)" : "#e2e8f0",
 
+    // card shadow
+    cardShadow: dark
+      ? "0 4px 24px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.07) inset"
+      : "0 4px 20px rgba(15,23,42,0.08), 0 1px 3px rgba(15,23,42,0.05)",
 
+    cardShadowHover: dark
+      ? "0 20px 60px rgba(124,58,237,0.18), 0 4px 24px rgba(0,0,0,0.5)"
+      : "0 20px 60px rgba(124,58,237,0.12), 0 4px 20px rgba(15,23,42,0.1)",
 
-function ArticleCard({
-  item,
-  theme,
-}) {
-  const image =
-    extractThumbnail(item);
-  
+    // image panel background — KEY FIX for dark mode
+    imgBg: dark
+      ? "linear-gradient(135deg, #0d1117 0%, #161b27 50%, #0f172a 100%)"
+      : "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
+
+    // tag
+    tagBg: dark ? "rgba(139,92,246,0.12)" : "rgba(124,58,237,0.07)",
+    tagColor: dark ? "#a78bfa" : "#7c3aed",
+
+    // featured badge
+    featuredBg: dark ? "rgba(6,182,212,0.12)" : "rgba(6,182,212,0.08)",
+    featuredColor: dark ? "#22d3ee" : "#0891b2",
+
+    // read time
+    metaColor: dark ? "#71717a" : "#9ca3af",
+
+    // description
+    descColor: dark ? "#a1a1aa" : "#4b5563",
+  };
+}
+
+// ── Tag chip ─────────────────────────────────────────────────────────────────
+function Tag({ label, t }) {
+  return (
+    <span
+      className="text-[11px] font-medium px-2.5 py-1 rounded-lg whitespace-nowrap"
+      style={{ background: t.tagBg, color: t.tagColor }}
+    >
+      {label}
+    </span>
+  );
+}
+
+// ── Article Card (grid) ───────────────────────────────────────────────────────
+function ArticleCard({ item, theme }) {
+  const t = tokens(theme);
+  const image = extractThumbnail(item);
+  const readTime = estimateReadTime(item.content);
+  const date = formatDate(item.pubDate);
+  const excerpt = stripHtml(item.description).substring(0, 100) + "…";
+
   return (
     <a
       href={item.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="
-        group
-        rounded-[28px]
-        overflow-hidden
-        border
-        no-underline
-        transition-all
-        duration-300
-        hover:-translate-y-2
-hover:shadow-[0_20px_60px_rgba(124,58,237,.12)]
-        
-      "
-      
+      className="group flex flex-col rounded-[24px] overflow-hidden border no-underline"
       style={{
-        background:
-          theme === "dark"
-            ? "rgba(255,255,255,.03)"
-            : "#fff",
-
-        borderColor:
-          theme === "dark"
-            ? "rgba(255,255,255,.08)"
-            : "#e2e8f0",
-
-            boxShadow:
-  theme === "dark"
-    ? "0 20px 60px rgba(124,58,237,.12)"
-    : "0 20px 50px rgba(124,58,237,.08)"
+        background: t.cardBg,
+        borderColor: t.cardBorder,
+        boxShadow: t.cardShadow,
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-6px)";
+        e.currentTarget.style.boxShadow = t.cardShadowHover;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = t.cardShadow;
       }}
     >
-  <div
-  className="
-    relative
-    h-[180px]
-    sm:h-[200px]
-    lg:h-[220px]
-    overflow-hidden
-  "
->
+      {/* Image */}
+      <div
+        className="relative overflow-hidden"
+        style={{
+          height: "180px",
+          background: t.imgBg,
+          flexShrink: 0,
+        }}
+      >
         {image && (
-  <img
-  src={image}
-  alt={item.title}
-  className="
-    absolute
-    inset-0
-    w-full
-    h-full
-    object-contain
-    p-4
-    md:p-6
-    transition-transform
-    duration-700
-    group-hover:scale-105
-  "
-/>
-)}
+          <img
+            src={image}
+            alt={item.title}
+            className="absolute inset-0 w-full h-full object-contain p-5 transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+        )}
+        {/* subtle gradient overlay at bottom */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-10"
+          style={{
+            background:
+              theme === "dark"
+                ? "linear-gradient(to top, rgba(13,17,23,0.6), transparent)"
+                : "linear-gradient(to top, rgba(248,250,252,0.4), transparent)",
+          }}
+        />
       </div>
 
-      <div className="p-5">
-
+      {/* Content */}
+      <div className="flex flex-col flex-1 p-5">
+        {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-4">
+          {(item.categories || []).slice(0, 3).map((tag) => (
+            <Tag key={tag} label={tag} t={t} />
+          ))}
+        </div>
 
-  {(item.categories || [])
-    .slice(0, 3)
-    .map((tag) => (
-      <span
-        key={tag}
-        className="
-          text-[11px]
-          px-2
-          py-1
-          rounded-md
-          bg-cyan-500/10
-          text-cyan-500
-        "
-      >
-        {tag}
-      </span>
-    ))}
-
-</div>
-
+        {/* Title */}
         <h3
-          className="
-            text-xl
-            font-semibold
-            leading-snug
-            mb-3
-          "
+          className="text-[17px] font-semibold leading-snug mb-2.5 flex-1"
+          style={{ color: "var(--text-primary)" }}
         >
           {item.title}
         </h3>
 
-        <p
-          className="
-            text-sm
-            leading-7
-            mb-5
-          "
-          style={{
-            color:
-              "var(--text-secondary)",
-          }}
-        >
-          {stripHtml(
-            item.description
-          ).substring(0, 80)}
-          ...
+        {/* Excerpt */}
+        <p className="text-sm leading-6 mb-5" style={{ color: t.descColor }}>
+          {excerpt}
         </p>
 
-        <div
-          className="
-            flex
-            justify-between
-            items-center
-          "
+        {/* Meta footer */}
+        <div className="flex items-center justify-between mt-auto pt-4"
+          style={{ borderTop: `1px solid ${t.cardBorder}` }}
         >
-          <span
-            className="text-xs"
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1.5 text-xs" style={{ color: t.metaColor }}>
+              <Clock size={12} />
+              {readTime} min read
+            </span>
+            <span className="text-xs" style={{ color: t.metaColor }}>
+              {date}
+            </span>
+          </div>
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:translate-x-1"
             style={{
-              color:
-                "var(--text-secondary)",
+              background: t.tagBg,
+              color: t.tagColor,
             }}
           >
-            {estimateReadTime(
-              item.content
-            )} min read
-          </span>
-
-          <ArrowRight
-            size={18}
-            className="
-              text-purple-500
-              transition-transform
-              duration-300
-              group-hover:translate-x-2
-            "
-          />
+            <ArrowRight size={14} />
+          </div>
         </div>
-
       </div>
     </a>
   );
 }
-function FeaturedArticle({
-  item,
-  theme,
-}) {
-  const image =
-    extractThumbnail(item);
-  
+
+// ── Featured Article ──────────────────────────────────────────────────────────
+function FeaturedArticle({ item, theme }) {
+  const t = tokens(theme);
+  const image = extractThumbnail(item);
+  const readTime = estimateReadTime(item.content);
+  const date = formatDate(item.pubDate);
+  const excerpt = stripHtml(item.description).substring(0, 240) + "…";
 
   return (
     <a
       href={item.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="
-        group
-        block
-        rounded-[32px]
-        overflow-hidden
-        border
-        no-underline
-      "
+      className="group block rounded-[28px] overflow-hidden border no-underline"
       style={{
-        background:
-          theme === "dark"
-            ? "rgba(255,255,255,.03)"
-            : "#fff",
-
-        borderColor:
-          theme === "dark"
-            ? "rgba(255,255,255,.08)"
-            : "#e2e8f0",
+        background: t.cardBg,
+        borderColor: t.cardBorder,
+        boxShadow: t.cardShadow,
+        transition: "box-shadow 0.35s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = t.cardShadowHover;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = t.cardShadow;
       }}
     >
-   <div
-  className="
-    grid
-    lg:grid-cols-[1.1fr_1fr]
-  "
->
-
-        {/* IMAGE */}
-       <div
-  className="
-    relative
-    overflow-hidden
-    aspect-[16/10]
-    lg:aspect-auto
-    lg:h-full
-   min-h-[180px]
-sm:min-h-[220px]
-  "
->
+      <div className="grid lg:grid-cols-[1.05fr_1fr]">
+        {/* Image panel */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            minHeight: "240px",
+            background: t.imgBg,
+          }}
+        >
           {image && (
-  <img
-  src={image}
-  alt={item.title}
-  className="
-    absolute
-    inset-0
-    w-full
-    h-full
-    object-contain
-    p-4
-    md:p-6
-    transition-transform
-    duration-700
-    group-hover:scale-105
-  "
-/>
-)}
+            <img
+              src={image}
+              alt={item.title}
+              className="absolute inset-0 w-full h-full object-contain p-6 md:p-8 transition-transform duration-700 group-hover:scale-[1.03]"
+            />
+          )}
+          {/* Edge fade into content (desktop only) */}
+          <div
+            className="hidden lg:block absolute top-0 right-0 w-16 h-full"
+            style={{
+              background:
+                theme === "dark"
+                  ? "linear-gradient(to right, transparent, rgba(13,17,23,0.55))"
+                  : "linear-gradient(to right, transparent, rgba(255,255,255,0.8))",
+            }}
+          />
         </div>
 
-        {/* CONTENT */}
-        <div className="p-5 sm:p-6 lg:p-8">
-
-         <div
-  className="
-    flex
-    flex-col
-    sm:flex-row
-    sm:items-center
-    gap-3
-    mb-6
-  "
->
-
+        {/* Content */}
+        <div className="flex flex-col p-6 sm:p-8 lg:p-10">
+          {/* Badges row */}
+          <div className="flex flex-wrap items-center gap-2 mb-6">
             <span
-              className="
-  text-[10px]
-  w-fit
-  sm:text-xs
-  px-2
-  sm:px-3
-  py-1
-  rounded-md
-  bg-cyan-500/10
-  text-cyan-500
-"
+              className="text-[11px] font-semibold px-2.5 py-1 rounded-lg tracking-wide"
+              style={{ background: t.featuredBg, color: t.featuredColor }}
             >
               FEATURED
             </span>
-
-            <div className="flex flex-wrap gap-2">
-
-  {(item.categories || [])
-  .slice(0, window.innerWidth < 640 ? 2 : 3)
-    .map((tag) => (
-      <span
-        key={tag}
-        className="
-        w-fit
-          text-xs
-          px-3
-          py-1
-          rounded-md
-          bg-cyan-500/10
-          text-cyan-500
-        "
-      >
-        {tag}
-      </span>
-    ))}
-
-</div>
-
+            {(item.categories || []).slice(0, 3).map((tag) => (
+              <Tag key={tag} label={tag} t={t} />
+            ))}
           </div>
 
+          {/* Title */}
           <h3
-          className="
-  text-2xl
-  sm:text-3xl
-  md:text-4xl
-  font-bold
-"
+            className="text-2xl sm:text-3xl font-bold leading-tight mb-4"
+            style={{ color: "var(--text-primary)" }}
           >
             {item.title}
           </h3>
 
+          {/* Excerpt */}
           <p
-            className="
-              text-base
-              leading-8
-              mb-8
-            "
-            style={{
-              color:
-                "var(--text-secondary)",
-            }}
+            className="text-[15px] leading-7 mb-8 flex-1"
+            style={{ color: t.descColor }}
           >
-            {stripHtml(
-              item.description
-            ).substring(0, 220)}
-            ...
+            {excerpt}
           </p>
 
+          {/* Footer */}
           <div
-            className="
-              flex
-              items-center
-              justify-between
-            "
+            className="flex items-center justify-between pt-5"
+            style={{ borderTop: `1px solid ${t.cardBorder}` }}
           >
-            <span
-              className="text-sm"
-              style={{
-                color:
-                  "var(--text-secondary)",
-              }}
+            <div className="flex items-center gap-3">
+              <span className="flex items-center gap-1.5 text-sm" style={{ color: t.metaColor }}>
+                <Clock size={13} />
+                {readTime} min read
+              </span>
+              <span className="text-sm" style={{ color: t.metaColor }}>
+                {date}
+              </span>
+            </div>
+            <div
+              className="flex items-center gap-1.5 text-sm font-medium transition-all duration-300 group-hover:gap-2.5"
+              style={{ color: t.tagColor }}
             >
-              {estimateReadTime(
-                item.content
-              )} min read
-            </span>
-
-            <ArrowRight
-              className="
-                text-purple-500
-                transition-transform
-                duration-300
-                group-hover:translate-x-2
-              "
-            />
+              Read article
+              <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
           </div>
-
         </div>
       </div>
     </a>
   );
 }
-// ── Main component ─────────────────────────────────────────────────────────────
+
+// ── Skeleton loader ───────────────────────────────────────────────────────────
+function Skeleton({ theme }) {
+  const pulse =
+    theme === "dark"
+      ? "rgba(255,255,255,0.05)"
+      : "rgba(0,0,0,0.05)";
+  const pulseBright =
+    theme === "dark"
+      ? "rgba(255,255,255,0.09)"
+      : "rgba(0,0,0,0.09)";
+
+  return (
+    <section
+      id="writing"
+      className="px-4 sm:px-6 md:px-8 lg:px-10 py-24"
+    >
+      <div className="max-w-[1420px] mx-auto space-y-6">
+        <div
+          className="h-[380px] rounded-[28px] animate-pulse"
+          style={{ background: pulse }}
+        />
+        <div className="grid md:grid-cols-2 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="h-[280px] rounded-[24px] animate-pulse"
+              style={{ background: pulse, animationDelay: `${i * 80}ms` }}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
 export default function Writing({ theme = "dark" }) {
   const [articles, setArticles] = useState([]);
   const [status, setStatus] = useState("loading");
@@ -475,212 +406,96 @@ export default function Writing({ theme = "dark" }) {
     fetchFeed().then((parsed) => {
       if (parsed && parsed.length) {
         setArticles(parsed);
-        setStatus("success");
       } else {
-        // RSS failed or empty — show hardcoded fallback articles
         setArticles(FALLBACK_ARTICLES);
-        setStatus("success");
       }
+      setStatus("success");
     });
   }, []);
 
+  if (status === "loading") return <Skeleton theme={theme} />;
+
   const featured = articles[0] || null;
-  const rest = articles.slice(1,5);
+  const rest = articles.slice(1, 5);
 
-
-  // 👇 ADD THIS HERE
-  if (status === "loading") {
-    return (
-      <section
-  id="writing"
-  className="
-    px-4
-    sm:px-6
-    md:px-8
-    lg:px-10
-    py-24
-  "
->
-        <div className="max-w-5xl mx-auto">
-
-          <div
-            className="
-              h-[420px]
-              rounded-[32px]
-              animate-pulse
-            "
-            style={{
-              background:
-                theme === "dark"
-                  ? "rgba(255,255,255,0.04)"
-                  : "rgba(0,0,0,0.04)",
-            }}
-          />
-
-        </div>
-      </section>
-    );
-  }
-
+  const t = tokens(theme);
 
   return (
-  <section
-  id="writing"
-  className="
-    px-5
-    sm:px-6
-    md:px-8
-    lg:px-10
-    py-16
-    md:py-24
-  "
->
-  <div className="max-w-[1420px] mx-auto">
-
-    {/* Section Label */}
-    <div className="flex items-center gap-3 mb-8">
-      <div
-        className="w-8 h-px"
-        style={{
-          background:
-            theme === "dark"
-              ? "#52525b"
-              : "#cbd5e1",
-        }}
-      />
-      <span
-        className="
-          uppercase
-          tracking-[0.2em]
-          text-xs
-          font-mono
-          text-zinc-400
-        "
-      >
-        Writing
-      </span>
-    </div>
-
-
-<div className="max-w-[760px]">
-    {/* Heading */}
-    <h2
-  className="
-    text-[34px]
-    sm:text-[42px]
-    md:text-[56px]
-    font-bold
-    leading-[0.95]
-    tracking-tight
-    mb-12
-  "
->
-      Notes from{" "}
-      <span className="text-purple-500">
-        production.
-      </span>
-    </h2>
-<div
-  className="
-    flex
-    flex-col
-    gap-3
-    mb-5
-    sm:flex-row
-    sm:items-center
-    sm:justify-between
-  "
->
-
-  <div>
-    <h3 className="text-xl font-semibold">
-      Published on Medium
-    </h3>
-
-    <p
-      className="text-sm mt-1"
-      style={{
-        color: "var(--text-secondary)",
-      }}
+    <section
+      id="writing"
+      className="px-5 sm:px-6 md:px-8 lg:px-10 py-16 md:py-24"
     >
-      Notes on AI, Machine Learning & Deep Learning
-    </p>
-  </div>
-</div>
- <div
-  className="
-    w-fit
-    self-start
-    px-3
-    py-1.5
-    rounded-full
-    bg-purple-500/10
-    text-purple-500
-    font-medium
-    text-sm
-    whitespace-nowrap
-    shrink-0
-    mb-8
-  "
->
-    {articles.length}+ Articles
-  </div>
+      <div className="max-w-[1420px] mx-auto">
 
-</div>
+        {/* Section label */}
+        <div className="flex items-center gap-3 mb-8">
+          <div
+            className="w-8 h-px"
+            style={{ background: theme === "dark" ? "#52525b" : "#cbd5e1" }}
+          />
+          <span
+            className="uppercase tracking-[0.2em] text-xs font-mono"
+            style={{ color: t.metaColor }}
+          >
+            Writing
+          </span>
+        </div>
 
-    {/* FEATURED */}
-    {featured && (
-      <FeaturedArticle
-        item={featured}
-        theme={theme}
-      />
-    )}
+        {/* Heading block */}
+        <div className="max-w-[760px] mb-12">
+          <h2 className="text-[34px] sm:text-[42px] md:text-[56px] font-bold leading-[0.95] tracking-tight mb-8">
+            Notes from{" "}
+            <span className="text-purple-500">production.</span>
+          </h2>
 
-    {/* GRID */}
-    <div
-      className="
-        mt-14
-        grid
-        md:grid-cols-2
-        gap-6
-      "
-    >
-      {rest.map((item) => (
-        <ArticleCard
-          key={item.guid}
-          item={item}
-          theme={theme}
-        />
-      ))}
-    </div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div>
+              <h3 className="text-xl font-semibold" style={{ color: "var(--text-primary)" }}>
+                Published on Medium
+              </h3>
+              <p className="text-sm mt-1" style={{ color: t.descColor }}>
+                Notes on AI, Machine Learning &amp; Deep Learning
+              </p>
+            </div>
 
-    {/* BUTTON */}
-   <div className="mt-12 flex justify-center sm:justify-start">
-      <a
-        href={`https://medium.com/@${MEDIUM_USERNAME}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="
-  inline-flex
-  items-center
-  justify-center
-  gap-2
-  sm:gap-3
-  text-purple-500
-  font-medium
-  transition-all
-  text-sm
-  sm:text-base
-  whitespace-nowrap
-"
-      >
-        <FaMedium size={18} />
-        View all articles
-        <ArrowRight size={18} />
-      </a>
-    </div>
+            <div
+              className="w-fit px-3 py-1.5 rounded-full font-medium text-sm whitespace-nowrap shrink-0 sm:ml-auto"
+              style={{ background: t.tagBg, color: t.tagColor }}
+            >
+              {articles.length}+ Articles
+            </div>
+          </div>
+        </div>
 
-  </div>
-</section>
+        {/* Featured */}
+        {featured && <FeaturedArticle item={featured} theme={theme} />}
+
+        {/* Grid */}
+        <div className="mt-10 grid md:grid-cols-2 gap-5">
+          {rest.map((item) => (
+            <ArticleCard key={item.guid} item={item} theme={theme} />
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-12 flex justify-center sm:justify-start">
+          <a
+            href={`https://medium.com/@${MEDIUM_USERNAME}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 font-medium text-sm sm:text-base whitespace-nowrap transition-all duration-300 group"
+            style={{ color: t.tagColor }}
+          >
+            <FaMedium size={18} />
+            View all articles on Medium
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </a>
+        </div>
+
+      </div>
+    </section>
   );
 }
