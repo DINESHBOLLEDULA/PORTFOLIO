@@ -3,6 +3,7 @@ import "./App.css";
 import HeroCard from "./assets/hero-card.png";
 import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
+import Writing from "./components/Writing";
 import emailjs from "@emailjs/browser";
 import {
   ArrowRight,
@@ -379,7 +380,7 @@ gap-3
   />
 </button>
 <button
-  className="
+className="
     group
     inline-flex
     items-center
@@ -397,19 +398,30 @@ gap-3
   style={{
     background:
       theme === "dark"
-        ? "#18181b" // zinc-900
-        : "#f1f5f9", // slate-100
+        ? "#18181b"
+        : "#f1f5f9",
 
     color:
       theme === "dark"
         ? "#e4e4e7"
-        : "#334155", // slate-700
+        : "#334155",
 
     border: `1px solid ${
       theme === "dark"
         ? "#3f3f46"
-        : "#cbd5e1" // slate-300
+        : "#cbd5e1"
     }`,
+  }}
+  onClick={() => {
+    window.open(
+      "https://drive.google.com/file/d/1vg46HLcBewO3SWoO6JzSw7Tmw9mjJd0J/view",
+      "_blank"
+    );
+
+    setTimeout(() => {
+      window.location.href =
+        "https://drive.google.com/uc?export=download&id=1vg46HLcBewO3SWoO6JzSw7Tmw9mjJd0J";
+    }, 300);
   }}
 >
   <Download size={16} />
@@ -546,6 +558,12 @@ gap-3
       </div>
       </div>
     </section>
+
+
+
+
+
+<Writing theme={theme} />
 
 
    {/* CONTACT SECTION */}
