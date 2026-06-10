@@ -35,7 +35,7 @@ function App() {
   const [formData, setFormData] = useState({
   name: "",
   email: "",
-  topic: "Project inquiry",
+  topic: "Hire Me",
   message: "",
 });
 
@@ -110,6 +110,20 @@ const [hoveredField, setHoveredField] = useState(null);
   setSending(false);
 };
 
+
+const messagePlaceholders = {
+  "Hire Me":
+    "Tell me about the role, team, tech stack, location, and what you're looking for in a candidate.",
+
+  "Project Inquiry":
+    "Tell me about your product, the problem you're solving, timeline, and how AI fits into the solution.",
+
+  "Freelance Work":
+    "Describe your project requirements, deliverables, budget range, and expected timeline.",
+
+  "Let's Connect":
+    "Introduce yourself and let me know what you'd like to discuss. I'm always happy to connect with builders, founders, and AI enthusiasts.",
+};
   return (
   <main
     className="
@@ -983,7 +997,12 @@ sm:text-[13px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
               What's this about?
             </label>
             <div className="flex flex-wrap gap-2">
-              {["Project inquiry", "Consulting", "Speaking", "Just saying hi"].map((t) => (
+              {[
+  "Hire Me",
+  "Project Inquiry",
+  "Freelance Work",
+  "Let's Connect"
+].map((t) => (
                 <button
                   key={t}
                   type="button"
@@ -1018,11 +1037,14 @@ sm:text-[13px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
             <textarea
               rows={7}
               value={formData.message}
+                key={formData.topic}
               maxLength={5000}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               onMouseEnter={() => setHoveredField("message")}
               onMouseLeave={() => setHoveredField(null)}
-              placeholder="Tell me about what you're building, who's involved, and what success looks like."
+              placeholder={
+  messagePlaceholders[formData.topic]
+}
               required
               className="w-full rounded-xl border px-4 py-4 text-sm resize-none outline-none transition-all duration-300 placeholder-zinc-600 focus:border-zinc-500"
               style={{
