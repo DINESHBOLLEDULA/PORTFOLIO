@@ -146,3 +146,16 @@ body {
   opacity: 1;
 }
 
+@media (max-width: 640px) {
+  footer .footer-link {
+    font-size: 15px;
+  }
+}
+
+
+
+.footer-status:hover {
+  box-shadow:
+    0 10px 30px rgba(56,189,248,0.08),
+    0 0 40px rgba(168,85,247,0.05);
+}

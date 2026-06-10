@@ -1111,74 +1111,132 @@ sm:text-[13px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
     relative
     border-t
     border-[var(--footer-border)]
-    px-5
+    px-4
     sm:px-6
     lg:px-14
-     pt-10
+    pt-8
     md:pt-12
-    pb-8
+    pb-6
     mt-0
   "
 >
-  <div
+ <div
   className="
-  grid
-  grid-cols-1
-  sm:grid-cols-2
-  lg:grid-cols-4
-  gap-6
-  lg:gap-8
-"
+    grid
+    grid-cols-1
+
+    lg:grid-cols-[1.25fr_1fr_1fr_1fr]
+
+    gap-10
+    lg:gap-10
+
+    items-start
+  "
 >
-    {/* LEFT */}
-    <div className="md:col-span-1">
-      <div className="flex items-center gap-4">
-        <div
-          className="
-            h-12
-            w-12
-            rounded-full
-            flex
-            items-center
-            justify-center
-            font-medium
-            text-black
-            bg-gradient-to-br
-            from-cyan-300
-            to-purple-400
-          "
-        >
-          DK
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold">
-            Dinesh Kumar B
-          </h3>
-
-          <p className="text-sm text-[var(--text-secondary)]">
-            AI/ML Engineer • India
-          </p>
-        </div>
-      </div>
-
-      <p
+  {/* ABOUT */}
+  <div>
+    <div className="flex items-center gap-4">
+      <div
         className="
-          mt-6
-          text-[16px]
-          leading-8
-          text-[var(--text-secondary)]
-          max-w-sm
+          h-12
+          w-12
+          rounded-full
+          flex
+          items-center
+          justify-center
+          font-medium
+          text-black
+          bg-gradient-to-br
+          from-cyan-300
+          to-purple-400
         "
       >
-        Designed and built with too much
-        coffee and a healthy obsession
-        for neural systems, LLMs and
-        AI products.
-      </p>
-    </div>
+        DK
+      </div>
 
-    {/* SITEMAP */}
+      <div>
+        <h3 className="text-lg font-semibold">
+          Dinesh Kumar B
+        </h3>
+
+        <p className="text-sm text-[var(--text-secondary)]">
+          AI/ML Engineer • India
+        </p>
+      
+
+      </div>
+      
+    </div>
+      <div
+  className="
+    inline-flex
+    lg:hidden
+    items-center
+    gap-2
+
+    mt-4
+
+    rounded-full
+    border
+
+    px-3
+    py-1.5
+
+    text-[13px]
+    font-medium
+  "
+  style={{
+    background:
+      theme === "dark"
+        ? "rgba(255,255,255,0.03)"
+        : "rgba(255,255,255,0.7)",
+
+    borderColor:
+      theme === "dark"
+        ? "rgba(255,255,255,0.08)"
+        : "rgba(15,23,42,0.08)",
+  }}
+>
+  <span
+    className="
+      h-2
+      w-2
+      rounded-full
+      bg-emerald-400
+      animate-pulse
+    "
+  />
+
+  Open to AI/ML opportunities
+</div>
+
+    <p
+      className="
+  mt-4
+  text-[15px]
+  md:text-[16px]
+  leading-7
+  text-[var(--text-secondary)]
+  max-w-[420px]
+  xl:max-w-[460px]
+"
+    >
+      Designed and built with too much coffee and a
+      healthy obsession for neural systems, LLMs and
+      AI products.
+    </p>
+  </div>
+
+  {/* MOBILE: Sitemap + Socials together */}
+  <div
+    className="
+      grid
+      grid-cols-2
+      gap-8
+      lg:contents
+    "
+  >
+    {/* Sitemap */}
     <div>
       <p
         className="
@@ -1193,25 +1251,27 @@ sm:text-[13px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
       </p>
 
       <div className="flex flex-col gap-3">
-  <a
-    href="#about"
-    className="
+        <a
+  href="#about"
+  className="
     footer-link
-group
-inline-flex
-items-center
-gap-2
-w-fit
-text-[17px]
-text-[var(--text-primary)]
-transition-all
-duration-300
-hover:translate-x-1
-hover:text-cyan-500
-"
-  >
-    About
-    <span
+    group
+    inline-flex
+    items-center
+    gap-2
+    w-fit
+    text-[15px]
+    md:text-[17px]
+    text-[var(--text-primary)]
+    transition-all
+    duration-300
+    hover:translate-x-1
+    hover:text-cyan-500
+  "
+>
+  About
+
+  <span
     className="
       opacity-0
       -translate-x-2
@@ -1223,27 +1283,28 @@ hover:text-cyan-500
   >
     →
   </span>
-  </a>
-
-  <a
-    href="#projects"
-    className="
+</a>
+        <a
+  href="#about"
+  className="
     footer-link
-group
-inline-flex
-items-center
-gap-2
-w-fit
-text-[17px]
-text-[var(--text-primary)]
-transition-all
-duration-300
-hover:translate-x-1
-hover:text-cyan-500
-"
-  >
-    Projects
-    <span
+    group
+    inline-flex
+    items-center
+    gap-2
+    w-fit
+    text-[15px]
+    md:text-[17px]
+    text-[var(--text-primary)]
+    transition-all
+    duration-300
+    hover:translate-x-1
+    hover:text-cyan-500
+  "
+>
+  Projects
+
+  <span
     className="
       opacity-0
       -translate-x-2
@@ -1255,27 +1316,28 @@ hover:text-cyan-500
   >
     →
   </span>
-  </a>
-
-  <a
-    href="#experience"
-    className="
+</a>
+        <a
+  href="#about"
+  className="
     footer-link
-group
-inline-flex
-items-center
-gap-2
-w-fit
-text-[17px]
-text-[var(--text-primary)]
-transition-all
-duration-300
-hover:translate-x-1
-hover:text-cyan-500
-"
-  >
-    Experience
-    <span
+    group
+    inline-flex
+    items-center
+    gap-2
+    w-fit
+    text-[15px]
+    md:text-[17px]
+    text-[var(--text-primary)]
+    transition-all
+    duration-300
+    hover:translate-x-1
+    hover:text-cyan-500
+  "
+>
+  Experience
+
+  <span
     className="
       opacity-0
       -translate-x-2
@@ -1287,59 +1349,28 @@ hover:text-cyan-500
   >
     →
   </span>
-  </a>
-
-  <a
-    href="#stack"
-   className="
-   footer-link
-group
-inline-flex
-items-center
-gap-2
-w-fit
-text-[17px]
-text-[var(--text-primary)]
-transition-all
-duration-300
-hover:translate-x-1
-hover:text-cyan-500
-"
-  >
-    Stack
-    <span
-    className="
-      opacity-0
-      -translate-x-2
-      transition-all
-      duration-300
-      group-hover:opacity-100
-      group-hover:translate-x-0
-    "
-  >
-    →
-  </span>
-  </a>
-
-  <a
-    href="#contact"
-    className="
+</a>
+        <a
+  href="#about"
+  className="
     footer-link
-group
-inline-flex
-items-center
-gap-2
-w-fit
-text-[17px]
-text-[var(--text-primary)]
-transition-all
-duration-300
-hover:translate-x-1
-hover:text-cyan-500
-"
-  >
-    Contact
-    <span
+    group
+    inline-flex
+    items-center
+    gap-2
+    w-fit
+    text-[15px]
+    md:text-[17px]
+    text-[var(--text-primary)]
+    transition-all
+    duration-300
+    hover:translate-x-1
+    hover:text-cyan-500
+  "
+>
+  Stack
+
+  <span
     className="
       opacity-0
       -translate-x-2
@@ -1351,127 +1382,44 @@ hover:text-cyan-500
   >
     →
   </span>
-  </a>
-</div>
+</a>
+        <a
+  href="#about"
+  className="
+    footer-link
+    group
+    inline-flex
+    items-center
+    gap-2
+    w-fit
+    text-[15px]
+    md:text-[17px]
+    text-[var(--text-primary)]
+    transition-all
+    duration-300
+    hover:translate-x-1
+    hover:text-cyan-500
+  "
+>
+  Contact
+
+  <span
+    className="
+      opacity-0
+      -translate-x-2
+      transition-all
+      duration-300
+      group-hover:opacity-100
+      group-hover:translate-x-0
+    "
+  >
+    →
+  </span>
+</a>
+      </div>
     </div>
 
-    {/* SOCIALS */}
-<div>
-  <p
-    className="
-      text-xs
-      uppercase
-      tracking-[0.2em]
-      text-[var(--text-muted)]
-      mb-5
-    "
-  >
-    Socials
-  </p>
-
-  <div className="flex flex-col gap-4">
-
-    <a
-      href="https://github.com/DINESHBOLLEDULA"
-      target="_blank"
-      rel="noreferrer"
-      className="
-group
-flex
-items-center
-gap-3
-w-fit
-transition-all
-duration-300
-hover:translate-x-1
-hover:text-cyan-500
-"
-    >
-     <FaGithub
-  size={18}
-  className="
-    transition-all
-    duration-300
-    group-hover:scale-110
-  "
-/>
-      <span>GitHub</span>
-    </a>
-
-    <a
-      href="https://www.linkedin.com/in/dineshbolledula/"
-      target="_blank"
-      rel="noreferrer"
-      className="
-group
-flex
-items-center
-gap-3
-w-fit
-transition-all
-duration-300
-hover:translate-x-1
-hover:text-cyan-500
-"
-    >
-      <FaLinkedin
-  size={18}
-  className="
-    transition-all
-    duration-300
-    group-hover:scale-110
-  "
-/>
-      <span>LinkedIn</span>
-    </a>
-
-    <a
-      href="https://medium.com/@dineshbolledula"
-      target="_blank"
-      rel="noreferrer"
-      className="
-group
-flex
-items-center
-gap-3
-w-fit
-transition-all
-duration-300
-hover:translate-x-1
-hover:text-cyan-500
-"
-    >
-      <FaMedium
-  size={18}
-  className="
-    transition-all
-    duration-300
-    group-hover:scale-110
-  "
-/>
-      <span>Medium</span>
-    </a>
-
-    {/* <a
-      href="https://instagram.com/YOUR_USERNAME"
-      target="_blank"
-      rel="noreferrer"
-      className="
-        flex
-        items-center
-        gap-3
-        hover:opacity-70
-        transition
-      "
-    >
-      <FaInstagram size={18} />
-      <span>Instagram</span>
-    </a> */}
-
-  </div>
-</div>
-
-    {/* STATUS */}
+    {/* Socials */}
     <div>
       <p
         className="
@@ -1482,73 +1430,167 @@ hover:text-cyan-500
           mb-5
         "
       >
-        Status
+        Socials
       </p>
 
-      <div
-        className="
-    rounded-xl
-    border
-    px-4
-    py-3
-    backdrop-blur-xl
-    max-w-[260px]
-  "
-        style={{
-          background:
-            theme === "dark"
-              ? "rgba(255,255,255,0.03)"
-              : "rgba(255,255,255,0.7)",
+      <div className="flex flex-col gap-4">
 
-          borderColor:
-            theme === "dark"
-              ? "rgba(255,255,255,0.08)"
-              : "rgba(15,23,42,0.08)",
-        }}
-      >
-        <div className="flex items-center gap-3">
-          <span
-            className="
-              h-3
-              w-3
-              rounded-full
-              bg-emerald-400
-              animate-pulse
-            "
-          />
-
-          <span className="font-medium text-sm">
-  Available for work
-</span>
-        </div>
-
-        <p
+        <a
+          href="https://github.com/DINESHBOLLEDULA"
+          target="_blank"
+          rel="noreferrer"
+          className="
+  group
+  flex
+  items-center
+  gap-3
+  w-fit
+  transition-all
+  duration-300
+  hover:translate-x-1
+  hover:text-cyan-500
+"
+        >
+          <FaGithub
+  size={18}
   className="
-    mt-2
-    text-xs
-    text-[var(--text-muted)]
+    transition-all
+    duration-300
+    group-hover:scale-110
   "
->
-  Open to AI/ML opportunities
-</p>
+/>
+          <span>GitHub</span>
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/dineshbolledula/"
+          target="_blank"
+          rel="noreferrer"
+          className="
+  group
+  flex
+  items-center
+  gap-3
+  w-fit
+  transition-all
+  duration-300
+  hover:translate-x-1
+  hover:text-cyan-500
+"
+        >
+          <FaLinkedin size={18}
+  className="
+    transition-all
+    duration-300
+    group-hover:scale-110
+  " />
+          <span>LinkedIn</span>
+        </a>
+
+        <a
+          href="https://medium.com/@dineshbolledula"
+          target="_blank"
+          rel="noreferrer"
+          className="
+  group
+  flex
+  items-center
+  gap-3
+  w-fit
+  transition-all
+  duration-300
+  hover:translate-x-1
+  hover:text-cyan-500
+"
+        >
+          <FaMedium  size={18}
+  className="
+    transition-all
+    duration-300
+    group-hover:scale-110
+  " />
+          <span>Medium</span>
+        </a>
+
       </div>
     </div>
   </div>
 
-  {/* BOTTOM */}
- <div
-  className="
-    mt-6
-    border-t
-    pt-4
-    text-sm
-    text-[var(--text-muted)]
-  "
-  style={{
-    borderColor: "var(--footer-border)"
-  }}
->
-  © 2026 dineshkumar
+ {/* STATUS */}
+
+
+<div className="hidden lg:block">
+  {/* current status card */}
+  <div className="lg:col-start-4">
+    <p
+      className="
+        text-xs
+        uppercase
+        tracking-[0.2em]
+        text-[var(--text-muted)]
+        mb-5
+      "
+    >
+      Status
+    </p>
+
+    <div
+      className="
+  footer-status
+  rounded-xl
+  border
+  px-4
+  py-3
+  backdrop-blur-xl
+
+  w-full
+  max-w-[260px]
+
+  transition-all
+  duration-300
+  hover:-translate-y-1
+"
+      style={{
+        background:
+          theme === "dark"
+            ? "rgba(255,255,255,0.03)"
+            : "rgba(255,255,255,0.7)",
+
+        borderColor:
+          theme === "dark"
+            ? "rgba(255,255,255,0.08)"
+            : "rgba(15,23,42,0.08)",
+      }}
+    >
+      <div className="flex items-center gap-3">
+        <span
+          className="
+            h-3
+            w-3
+            rounded-full
+            bg-emerald-400
+            animate-pulse
+          "
+        />
+        <span className="font-medium text-sm">
+          Available for work
+        </span>
+      </div>
+
+      <p
+        className="
+          mt-2
+          text-xs
+          text-[var(--text-muted)]
+        "
+      >
+        Open to AI/ML opportunities
+      </p>
+    </div>
+  </div>
+</div>
+ 
+  
 </div>
 </footer>
   </main>
