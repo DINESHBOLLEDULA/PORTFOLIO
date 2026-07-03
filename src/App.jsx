@@ -19,6 +19,27 @@ import {
    FaMedium,
   FaInstagram,
 } from "react-icons/fa";
+
+// TODO: swap these for your own stack — this is just placeholder content
+const SKILLS = [
+  "PyTorch",
+  "TensorFlow",
+  "Scikit-learn",
+  "React",
+  "FastAPI",
+  "React Native",
+  "LangChain",
+  "Hugging Face",
+  "Docker",
+  "AWS",
+  "PostgreSQL",
+  "vLLM",
+  "Pinecone",
+  "ONNX",
+  "CUDA"
+
+];
+
 function App() {
   const [loading, setLoading] =
     useState(true);
@@ -194,6 +215,9 @@ const messagePlaceholders = {
     pt-24
     sm:pt-28
     lg:pt-24
+    pb-16
+    sm:pb-20
+    lg:pb-24
   "
 >
   <div
@@ -573,6 +597,21 @@ className="
       </div>
     </section>
 
+    {/* SKILLS MARQUEE */}
+    <section className="skills-marquee-section">
+      <div className="skills-marquee">
+        <div className="skills-marquee-track">
+          {[...SKILLS, ...SKILLS].map((skill, i) => (
+            <span
+              key={i}
+              className="skills-marquee-item"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
 
 
 
@@ -1307,7 +1346,7 @@ sm:text-[13px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
   </span>
 </a>
         <a
-  href="#about"
+  href="#projects"
   className="
     footer-link
     group
@@ -1340,7 +1379,7 @@ sm:text-[13px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
   </span>
 </a>
         <a
-  href="#about"
+  href="#experience"
   className="
     footer-link
     group
@@ -1373,7 +1412,7 @@ sm:text-[13px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
   </span>
 </a>
         <a
-  href="#about"
+  href="#stack"
   className="
     footer-link
     group
@@ -1406,7 +1445,7 @@ sm:text-[13px] font-medium tracking-[-0.03em]">in/dineshbolledula</p>
   </span>
 </a>
         <a
-  href="#about"
+  href="#contact"
   className="
     footer-link
     group
