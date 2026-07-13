@@ -20,6 +20,8 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 
+
+import { DevConsole } from "./components/dev-console";
 // TODO: swap these for your own stack — this is just placeholder content
 const SKILLS = [
   "PyTorch",
@@ -617,6 +619,9 @@ className="
 
 
 <Writing theme={theme} />
+
+
+<DevConsole username="DINESHBOLLEDULA" owner="DINESHBOLLEDULA" repo="PORTFOLIO" theme={theme}/>
 
 
    {/* CONTACT SECTION */}
