@@ -4,6 +4,7 @@ import HeroCard from "./assets/hero-card.png";
 import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
 import Writing from "./components/Writing";
+import CareerTimeline from "./components/CareerTimeline";
 import emailjs from "@emailjs/browser";
 import {
   ArrowRight,
@@ -616,7 +617,7 @@ className="
     </section>
 
 
-
+<CareerTimeline />
 
 <Writing theme={theme} />
 
