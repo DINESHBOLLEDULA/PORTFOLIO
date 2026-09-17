@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: dinesh-portfolio-rag
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python -m scripts.sync_index
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: PINECONE_INDEX_NAME
+        sync: false
+      - key: PINECONE_NAMESPACE
+        value: portfolio
+      - key: CORS_ORIGINS
+        sync: false

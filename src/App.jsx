@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
 import Writing from "./components/Writing";
 import CareerTimeline from "./components/CareerTimeline";
+import PortfolioChatbot from "./components/PortfolioChatbot";
 import emailjs from "@emailjs/browser";
 import {
   ArrowRight,
@@ -162,6 +163,8 @@ const messagePlaceholders = {
       theme={theme}
       setTheme={setTheme}
     />
+
+    <PortfolioChatbot theme={theme} />
 
     {/* HERO SECTION */}
     <section
@@ -600,6 +603,21 @@ className="
       </div>
     </section>
 
+    <section id="about">
+     <div className="flex items-center gap-3 mb-8">
+          <div
+            className="w-8 h-px"
+            style={{ background: theme === "dark" ? "#52525b" : "#cbd5e1" }}
+          />
+          <span
+            className="uppercase tracking-[0.2em] text-xs font-mono"
+            style={{}}
+          >
+            About me
+          </span>
+        </div>
+    </section>
+
     {/* SKILLS MARQUEE */}
     <section className="skills-marquee-section">
       <div className="skills-marquee">
@@ -619,11 +637,12 @@ className="
 
 <CareerTimeline />
 
-<Writing theme={theme} />
+
 
 
 <DevConsole username="DINESHBOLLEDULA" owner="DINESHBOLLEDULA" repo="PORTFOLIO" theme={theme}/>
 
+<Writing theme={theme} />
 
    {/* CONTACT SECTION */}
 <section
