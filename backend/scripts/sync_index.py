@@ -43,7 +43,8 @@ def main():
         index.delete(filter={"source": {"$eq": "portfolio"}}, namespace=NAMESPACE)
     index.upsert(vectors=records + [{
         "id": MANIFEST_ID,
-        "values": [0.0] * EMBEDDING_DIMENSION,
+        # Pinecone rejects all-zero vectors; this marker is never retrieved as context.
+        "values": [1.0] + [0.0] * (EMBEDDING_DIMENSION - 1),
         "metadata": {"source": "portfolio-manifest", "content_hash": digest},
     }], namespace=NAMESPACE)
     print(f"Indexed {len(records)} portfolio sections.")
