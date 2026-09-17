@@ -1,31 +1,47 @@
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle, Send, X } from "lucide-react";
+import { MessageCircle, Minus, Send, X } from "lucide-react";
+import "./PortfolioChatbot.css";
 
-const WELCOME_MESSAGE = "Hi — I'm Dinesh's digital portfolio. Ask me about my work, experience, skills, or background.";
-const SUGGESTIONS = ["What do you work on?", "Tell me about your experience", "What are your skills?"];
+const WELCOME_MESSAGE = "Hi! I’m Dinesh AI.\nAsk me anything about my projects, experience, skills, or anything else!";
+const SUGGESTIONS = ["My Projects", "My Skills", "My Experience"];
 const CHAT_API_URL = (import.meta.env.VITE_CHAT_API_URL || "https://portfolio-azyp.onrender.com").replace(/\/$/, "");
 
-// Kept self-contained so pixel-art visuals and section-aware prompts can evolve independently.
-export default function PortfolioChatbot({ theme, activeSection }) {
+function Avatar({ small = false }) {
+  return <span className={`portfolio-avatar${small ? " portfolio-avatar--small" : ""}`} aria-hidden="true">DK</span>;
+}
+
+async function readStream(reader, decoder, onChunk, accumulated = "") {
+  const { done, value } = await reader.read();
+  if (done) return `${accumulated}${decoder.decode()}`;
+  const next = `${accumulated}${decoder.decode(value, { stream: true })}`;
+  onChunk(next);
+  return readStream(reader, decoder, onChunk, next);
+}
+
+export default function PortfolioChatbot({ activeSection }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([{ id: "welcome", role: "assistant", content: WELCOME_MESSAGE }]);
   const [inputValue, setInputValue] = useState("");
   const [isSending, setIsSending] = useState(false);
   const messageSequence = useRef(0);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    if (CHAT_API_URL) fetch(`${CHAT_API_URL}/health`, { method: "GET", keepalive: true }).catch(() => {});
+    fetch(`${CHAT_API_URL}/health`, { method: "GET", keepalive: true }).catch(() => {});
   }, []);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages]);
+
   const handleSend = async (suggestion) => {
-    const content = typeof suggestion === "string" ? suggestion.trim() : inputValue.trim();
+    const content = (typeof suggestion === "string" ? suggestion : inputValue).trim();
     if (!content || isSending) return;
 
     const sequence = ++messageSequence.current;
     const userMessage = { id: `user-${sequence}`, role: "user", content };
     const assistantMessageId = `assistant-${sequence}`;
     const conversation = [...messages.filter((message) => message.id !== "welcome"), userMessage];
-
     setMessages((current) => [...current, userMessage, { id: assistantMessageId, role: "assistant", content: "", isThinking: true }]);
     setInputValue("");
     setIsSending(true);
@@ -34,54 +50,52 @@ export default function PortfolioChatbot({ theme, activeSection }) {
       const response = await fetch(`${CHAT_API_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: conversation.map(({ role, content: text }) => ({ role, content: text })),
-          activeSection,
-        }),
+        body: JSON.stringify({ messages: conversation.map(({ role, content: text }) => ({ role, content: text })), activeSection }),
       });
       if (!response.ok || !response.body) throw new Error(`Chat service returned ${response.status}`);
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let answer = "";
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        answer += decoder.decode(value, { stream: true });
-        setMessages((current) => current.map((message) => message.id === assistantMessageId
-          ? { ...message, content: answer, isThinking: false }
-          : message));
-      }
-      answer += decoder.decode();
-      setMessages((current) => current.map((message) => message.id === assistantMessageId
-        ? { ...message, content: answer || "I couldn't generate a response just now. Please try again.", isThinking: false }
-        : message));
+      const answer = await readStream(reader, decoder, (chunk) => {
+        setMessages((current) => current.map((message) => message.id === assistantMessageId ? { ...message, content: chunk, isThinking: false } : message));
+      });
+      setMessages((current) => current.map((message) => message.id === assistantMessageId ? { ...message, content: answer || "I couldn’t generate a response just now.", isThinking: false } : message));
     } catch (error) {
-      setMessages((current) => current.map((message) => message.id === assistantMessageId
-        ? { ...message, content: error.message.includes("503") ? "The portfolio chat service is waking up or temporarily unavailable. Please try again in a moment." : "I couldn't reach the chat service. Please try again.", isThinking: false }
-        : message));
+      const content = error.message.includes("503") ? "I’m waking up right now. Please try again in a moment." : "I couldn’t reach the chat service. Please try again.";
+      setMessages((current) => current.map((message) => message.id === assistantMessageId ? { ...message, content, isThinking: false } : message));
     } finally {
       setIsSending(false);
     }
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-[60]">
-      {isOpen && <section className="mb-3 flex h-[min(560px,calc(100dvh-110px))] w-[min(380px,calc(100vw-32px))] flex-col overflow-hidden rounded-2xl border shadow-2xl" style={{ background: theme === "dark" ? "#111318" : "#fff", borderColor: "var(--glass-border)", color: "var(--text-primary)" }}>
-        <header className="flex items-center justify-between border-b px-4 py-3" style={{ borderColor: "var(--glass-border)" }}>
-          <div><h2 className="font-semibold">Dinesh</h2><p className="text-xs" style={{ color: "var(--text-secondary)" }}>Portfolio assistant</p></div>
-          <button type="button" aria-label="Close chat" onClick={() => setIsOpen(false)}><X size={19} /></button>
-        </header>
-        <div className="flex-1 space-y-3 overflow-y-auto p-4">
-          {messages.map((message) => <div key={message.id} className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 text-sm ${message.role === "user" ? "ml-auto bg-violet-500/20" : "border"}`} style={message.role === "assistant" ? { borderColor: "var(--glass-border)" } : undefined}>{message.content || "Thinking…"}</div>)}
-          {messages.length === 1 && <div className="flex flex-wrap gap-2">{SUGGESTIONS.map((item) => <button key={item} type="button" onClick={() => handleSend(item)} className="rounded-full border px-3 py-1.5 text-xs" style={{ borderColor: "var(--glass-border)" }}>{item}</button>)}</div>}
-        </div>
-        <form className="flex gap-2 border-t p-3" style={{ borderColor: "var(--glass-border)" }} onSubmit={(event) => { event.preventDefault(); handleSend(); }}>
-          <input value={inputValue} onChange={(event) => setInputValue(event.target.value)} disabled={isSending} placeholder="Ask about Dinesh…" className="min-w-0 flex-1 bg-transparent text-sm outline-none" />
-          <button type="submit" disabled={isSending || !inputValue.trim()} aria-label="Send message"><Send size={18} /></button>
-        </form>
-      </section>}
-      <button type="button" aria-label="Open portfolio chat" aria-expanded={isOpen} onClick={() => setIsOpen(true)} className="flex h-14 w-14 items-center justify-center rounded-full bg-violet-600 text-white shadow-lg"><MessageCircle size={24} /></button>
+    <div className="portfolio-chat">
+      {isOpen && (
+        <section className="portfolio-chat__window" aria-label="Dinesh AI chat">
+          <header className="portfolio-chat__header">
+            <Avatar />
+            <div className="portfolio-chat__identity"><strong>Dinesh AI</strong><span>Ask me anything!</span></div>
+            <div className="portfolio-chat__controls"><button type="button" aria-label="Minimize chat" onClick={() => setIsOpen(false)}><Minus size={17} /></button><button type="button" aria-label="Close chat" onClick={() => setIsOpen(false)}><X size={17} /></button></div>
+          </header>
+
+          <div className="portfolio-chat__messages">
+            {messages.map((message) => (
+              <article key={message.id} className={`portfolio-message portfolio-message--${message.role}`}>
+                {message.role === "assistant" && <Avatar small />}
+                <p>{message.content || <span className="portfolio-message__typing">Thinking<span>.</span><span>.</span><span>.</span></span>}</p>
+              </article>
+            ))}
+            {messages.length === 1 && <div className="portfolio-chat__suggestions">{SUGGESTIONS.map((item) => <button key={item} type="button" onClick={() => handleSend(item)} disabled={isSending}>{item}</button>)}</div>}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <form className="portfolio-chat__input" onSubmit={(event) => { event.preventDefault(); handleSend(); }}>
+            <input value={inputValue} onChange={(event) => setInputValue(event.target.value)} disabled={isSending} placeholder="Type a message..." aria-label="Ask Dinesh a question" />
+            <button type="submit" disabled={!inputValue.trim() || isSending} aria-label="Send message"><Send size={17} fill="currentColor" /></button>
+          </form>
+        </section>
+      )}
+      {!isOpen && <button type="button" className="portfolio-chat__launcher" aria-label="Open Dinesh AI chat" onClick={() => setIsOpen(true)}><MessageCircle size={24} /><span>Ask Dinesh</span></button>}
     </div>
   );
 }
