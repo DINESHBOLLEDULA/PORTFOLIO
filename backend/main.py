@@ -89,8 +89,13 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="Dinesh Portfolio RAG", lifespan=lifespan)
-origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",") if origin.strip()]
-app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
+configured_origins = os.getenv("CORS_ORIGINS", "").split(",")
+origins = {
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    *(origin.strip().rstrip("/") for origin in configured_origins if origin.strip()),
+}
+app.add_middleware(CORSMiddleware, allow_origins=list(origins), allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
 
 
 @app.get("/health")
