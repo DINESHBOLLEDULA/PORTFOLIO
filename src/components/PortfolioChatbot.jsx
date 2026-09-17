@@ -40,14 +40,14 @@ export default function PortfolioChatbot({ theme, activeSection }) {
           activeSection,
         }),
       });
-      if (!response.ok) throw new Error("Chat request failed");
+      if (!response.ok) throw new Error(`Chat service returned ${response.status}`);
       const { answer } = await response.json();
       setMessages((current) => current.map((message) => message.id === assistantMessageId
         ? { ...message, content: answer || "I couldn't generate a response just now. Please try again.", isThinking: false }
         : message));
-    } catch {
+    } catch (error) {
       setMessages((current) => current.map((message) => message.id === assistantMessageId
-        ? { ...message, content: "I couldn't reach the chat service. Please try again.", isThinking: false }
+        ? { ...message, content: error.message.includes("503") ? "The portfolio chat service is waking up or temporarily unavailable. Please try again in a moment." : "I couldn't reach the chat service. Please try again.", isThinking: false }
         : message));
     } finally {
       setIsSending(false);

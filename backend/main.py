@@ -1,4 +1,5 @@
 import os
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
@@ -9,9 +10,10 @@ from pinecone import Pinecone
 from pydantic import BaseModel, Field
 
 EMBEDDING_MODEL = "gemini-embedding-001"
-CHAT_MODEL = "gemini-2.5-flash"
+CHAT_MODEL = "gemini-3.6-flash"
 EMBEDDING_DIMENSION = int(os.getenv("PINECONE_DIMENSION", "768"))
 NO_ANSWER = "I don't have that information on my portfolio yet."
+logger = logging.getLogger(__name__)
 
 
 class Message(BaseModel):
@@ -116,5 +118,5 @@ def chat(request: ChatRequest):
         )
         return ChatResponse(answer=(response.text or NO_ANSWER).strip())
     except Exception as error:
-        print(f"Portfolio chat failed: {error}")
+        logger.exception("Portfolio chat failed")
         raise HTTPException(status_code=503, detail="The chat service is temporarily unavailable.") from error
