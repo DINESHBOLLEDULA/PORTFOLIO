@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 
 EMBEDDING_MODEL = "gemini-embedding-001"
 CHAT_MODEL = "gemini-2.5-flash"
-EMBEDDING_DIMENSION = 768
+EMBEDDING_DIMENSION = int(os.getenv("PINECONE_DIMENSION", "768"))
 NO_ANSWER = "I don't have that information on my portfolio yet."
 
 

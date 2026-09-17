@@ -15,5 +15,7 @@ services:
         sync: false
       - key: PINECONE_NAMESPACE
         value: portfolio
+      - key: PINECONE_DIMENSION
+        value: 768
       - key: CORS_ORIGINS
         sync: false
