@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from google import genai
 from google.genai import types
 from pinecone import Pinecone
@@ -23,10 +24,6 @@ class Message(BaseModel):
 
 class ChatRequest(BaseModel):
     messages: list[Message] = Field(min_length=1, max_length=8)
-
-
-class ChatResponse(BaseModel):
-    answer: str
 
 
 def required_env(name: str) -> str:
@@ -90,12 +87,13 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(title="Dinesh Portfolio RAG", lifespan=lifespan)
 configured_origins = os.getenv("CORS_ORIGINS", "").split(",")
-origins = {
+origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    *(origin.strip().rstrip("/") for origin in configured_origins if origin.strip()),
-}
-app.add_middleware(CORSMiddleware, allow_origins=list(origins), allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
+    "https://portfolio-dineshkumar-one.vercel.app",
+]
+origins.extend(origin.strip().rstrip("/") for origin in configured_origins if origin.strip())
+app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
 
 
 @app.get("/health")
@@ -103,25 +101,42 @@ def health():
     return {"status": "ok"}
 
 
-@app.post("/chat", response_model=ChatResponse)
+def stream_reply(messages: list[Message], context: str):
+    try:
+        gemini, _ = clients()
+        contents = [
+            types.Content(role="model" if message.role == "assistant" else "user", parts=[types.Part(text=message.content.strip())])
+            for message in messages
+        ]
+        response = gemini.models.generate_content_stream(
+            model=CHAT_MODEL,
+            contents=contents,
+            config=types.GenerateContentConfig(system_instruction=system_instruction(context), temperature=0.2, max_output_tokens=350),
+        )
+        sent_content = False
+        for chunk in response:
+            if chunk.text:
+                sent_content = True
+                yield chunk.text
+        if not sent_content:
+            yield NO_ANSWER
+    except Exception:
+        logger.exception("Portfolio chat stream failed")
+        yield "\n\nI couldn't complete that response. Please try again."
+
+
+@app.post("/chat")
 def chat(request: ChatRequest):
     question = next((message.content.strip() for message in reversed(request.messages) if message.role == "user"), "")
     try:
         context = retrieve_context(question)
         if not context:
-            return ChatResponse(answer=NO_ANSWER)
-
-        gemini, _ = clients()
-        contents = [
-            types.Content(role="model" if message.role == "assistant" else "user", parts=[types.Part(text=message.content.strip())])
-            for message in request.messages
-        ]
-        response = gemini.models.generate_content(
-            model=CHAT_MODEL,
-            contents=contents,
-            config=types.GenerateContentConfig(system_instruction=system_instruction(context), temperature=0.2, max_output_tokens=350),
+            return StreamingResponse(iter([NO_ANSWER]), media_type="text/plain; charset=utf-8")
+        return StreamingResponse(
+            stream_reply(request.messages, context),
+            media_type="text/plain; charset=utf-8",
+            headers={"Cache-Control": "no-cache, no-transform", "X-Accel-Buffering": "no"},
         )
-        return ChatResponse(answer=(response.text or NO_ANSWER).strip())
     except Exception as error:
         logger.exception("Portfolio chat failed")
         raise HTTPException(status_code=503, detail="The chat service is temporarily unavailable.") from error

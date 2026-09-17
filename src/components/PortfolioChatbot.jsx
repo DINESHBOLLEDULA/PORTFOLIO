@@ -3,7 +3,7 @@ import { MessageCircle, Send, X } from "lucide-react";
 
 const WELCOME_MESSAGE = "Hi — I'm Dinesh's digital portfolio. Ask me about my work, experience, skills, or background.";
 const SUGGESTIONS = ["What do you work on?", "Tell me about your experience", "What are your skills?"];
-const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL?.replace(/\/$/, "");
+const CHAT_API_URL = (import.meta.env.VITE_CHAT_API_URL || "https://portfolio-azyp.onrender.com").replace(/\/$/, "");
 
 // Kept self-contained so pixel-art visuals and section-aware prompts can evolve independently.
 export default function PortfolioChatbot({ theme, activeSection }) {
@@ -31,7 +31,6 @@ export default function PortfolioChatbot({ theme, activeSection }) {
     setIsSending(true);
 
     try {
-      if (!CHAT_API_URL) throw new Error("Missing VITE_CHAT_API_URL");
       const response = await fetch(`${CHAT_API_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,8 +39,20 @@ export default function PortfolioChatbot({ theme, activeSection }) {
           activeSection,
         }),
       });
-      if (!response.ok) throw new Error(`Chat service returned ${response.status}`);
-      const { answer } = await response.json();
+      if (!response.ok || !response.body) throw new Error(`Chat service returned ${response.status}`);
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let answer = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        answer += decoder.decode(value, { stream: true });
+        setMessages((current) => current.map((message) => message.id === assistantMessageId
+          ? { ...message, content: answer, isThinking: false }
+          : message));
+      }
+      answer += decoder.decode();
       setMessages((current) => current.map((message) => message.id === assistantMessageId
         ? { ...message, content: answer || "I couldn't generate a response just now. Please try again.", isThinking: false }
         : message));
