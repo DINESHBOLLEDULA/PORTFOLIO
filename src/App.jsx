@@ -22,26 +22,41 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 
+// Skill logos — replace these placeholder SVGs with your own PNGs/SVGs
+import pytorchLogo from "./assets/skills/pytorch.svg";
+import tensorflowLogo from "./assets/skills/tensorflow.svg";
+import scikitlearnLogo from "./assets/skills/scikitlearn.svg";
+import reactLogo from "./assets/skills/react.svg";
+import fastapiLogo from "./assets/skills/fastapi.svg";
+import reactnativeLogo from "./assets/skills/reactnative.svg";
+import langchainLogo from "./assets/skills/langchain.svg";
+import huggingfaceLogo from "./assets/skills/huggingface.svg";
+import dockerLogo from "./assets/skills/docker.svg";
+import awsLogo from "./assets/skills/aws.svg";
+import postgresqlLogo from "./assets/skills/postgresql.svg";
+import vllmLogo from "./assets/skills/vllm.svg";
+import pineconeLogo from "./assets/skills/pinecone.svg";
+import onnxLogo from "./assets/skills/onnx.svg";
+import cudaLogo from "./assets/skills/cuda.svg";
 
 import { DevConsole } from "./components/dev-console";
-// TODO: swap these for your own stack — this is just placeholder content
-const SKILLS = [
-  "PyTorch",
-  "TensorFlow",
-  "Scikit-learn",
-  "React",
-  "FastAPI",
-  "React Native",
-  "LangChain",
-  "Hugging Face",
-  "Docker",
-  "AWS",
-  "PostgreSQL",
-  "vLLM",
-  "Pinecone",
-  "ONNX",
-  "CUDA"
 
+const SKILLS = [
+  { name: "PyTorch", logo: pytorchLogo },
+  { name: "TensorFlow", logo: tensorflowLogo },
+  { name: "Scikit-learn", logo: scikitlearnLogo },
+  { name: "React", logo: reactLogo },
+  { name: "FastAPI", logo: fastapiLogo },
+  { name: "React Native", logo: reactnativeLogo },
+  { name: "LangChain", logo: langchainLogo },
+  { name: "Hugging Face", logo: huggingfaceLogo },
+  { name: "Docker", logo: dockerLogo },
+  { name: "AWS", logo: awsLogo },
+  { name: "PostgreSQL", logo: postgresqlLogo },
+  { name: "vLLM", logo: vllmLogo },
+  { name: "Pinecone", logo: pineconeLogo },
+  { name: "ONNX", logo: onnxLogo },
+  { name: "CUDA", logo: cudaLogo },
 ];
 
 function App() {
@@ -627,7 +642,11 @@ className="
               key={i}
               className="skills-marquee-item"
             >
-              {skill}
+              <img
+                src={skill.logo}
+                alt={skill.name}
+                className="skills-marquee-logo"
+              />
             </span>
           ))}
         </div>
